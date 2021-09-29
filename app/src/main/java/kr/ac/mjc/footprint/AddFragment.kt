@@ -40,7 +40,6 @@ class AddFragment:Fragment() {
         var view=inflater.inflate(R.layout.fragment_add,container,false)
         //가져온 뷰에 위젯들이 있기 떄문에 찾아서 넣어준다.
         loadingPb=view.findViewById(R.id.loading_pb)
-        imageIv=view.findViewById(R.id.image_iv)
         textEt=view.findViewById(R.id.text_et)
         submitBtn=view.findViewById(R.id.submit_btn)
 
@@ -62,13 +61,6 @@ class AddFragment:Fragment() {
         firestore= FirebaseFirestore.getInstance()
 
 
-
-        imageIv.setOnClickListener {
-            //이미지가 선택되었을때
-            var intent=Intent(ACTION_PICK)
-            intent.type="image/*"
-            startActivityForResult(intent,REQ_IMAGE)
-        }
 
         submitBtn.setOnClickListener {
             //버튼 클릭
@@ -93,10 +85,6 @@ class AddFragment:Fragment() {
 
 
 
-            if(selectedImage==null){
-                Toast.makeText(activity,"이미지를 선택해주세요",Toast.LENGTH_SHORT).show() //아무것도 등록시
-                return@setOnClickListener
-            }
             //업로드 진행
             startLoading()
             var fileName=UUID.randomUUID().toString() //파일을 uuid를 통해 새로 생성
