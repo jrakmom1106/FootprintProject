@@ -44,7 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="20dp"
-        android:text="기술스택" />
+        android:text="textfield" />
 
     <EditText
         android:id="@+id/profile_et2"

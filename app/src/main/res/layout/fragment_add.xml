@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="10dp"
-        android:text="모집 공고 업로드"
+        android:text="일기장 작성"
         android:textSize="18sp"
         android:textStyle="bold" />
 

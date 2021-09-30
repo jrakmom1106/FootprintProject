@@ -111,7 +111,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:gravity="center|right|left"
-            android:text="소개"
+            android:text="textfield"
             android:textColor="#000000"
 
             android:textSize="20sp" />
@@ -140,7 +140,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center|right|left"
-            android:text="기술 스택"
+            android:text="textfield"
             android:textColor="#000000"
 
             android:textSize="20sp" />
