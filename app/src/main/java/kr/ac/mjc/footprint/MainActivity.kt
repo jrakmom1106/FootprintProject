@@ -1,10 +1,17 @@
 package kr.ac.mjc.footprint
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
 import android.os.Bundle
-import android.widget.LinearLayout
+import android.util.Base64
+import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
+import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
+
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -13,6 +20,10 @@ class MainActivity : AppCompatActivity() {
     lateinit var tabLayout:TabLayout
 
     lateinit var pageAdapter:PageAdapter
+
+
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,10 +47,35 @@ class MainActivity : AppCompatActivity() {
         tabLayout.getTabAt(0)?.setIcon(R.drawable.baseline_home_black_48)?.setText("홈")
         tabLayout.getTabAt(1)?.setIcon(R.drawable.baseline_add_black_48)?.setText("모집 공고")
         tabLayout.getTabAt(2)?.setIcon(R.drawable.baseline_perm_identity_black_48)?.setText("마이페이지")
+
+        getHashKey();
+
+
+
+
+    }
+    private fun getHashKey() {
+        var packageInfo: PackageInfo? = null
+        try {
+            packageInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
+        } catch (e: PackageManager.NameNotFoundException) {
+            e.printStackTrace()
+        }
+        if (packageInfo == null) Log.e("KeyHash", "KeyHash:null")
+        for (signature in packageInfo!!.signatures) {
+            try {
+                val md = MessageDigest.getInstance("SHA")
+                md.update(signature.toByteArray())
+                Log.d("KeyHash", Base64.encodeToString(md.digest(), Base64.DEFAULT))
+            } catch (e: NoSuchAlgorithmException) {
+                Log.e("KeyHash", "Unable to get MessageDigest. signature=$signature", e)
+            }
+        }
     }
 
+
     //업로드이후 홈으로 이동하는 함수
-    fun moveTab(position:Int){
+    fun moveTab(position: Int){
         tabLayout.selectTab(tabLayout.getTabAt(position))
     }
 }

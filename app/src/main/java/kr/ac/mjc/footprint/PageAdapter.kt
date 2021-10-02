@@ -8,13 +8,14 @@ class PageAdapter(fragmentManager: FragmentManager):FragmentPagerAdapter(fragmen
     //이 클래스를 상속 받으면 오버라이딩을 해야하는 함수들을 해줘야한다
     override fun getItem(position: Int): Fragment { //각각의 텝이 눌러질 떄마다 그 포지션이 호출이 된다.
         if(position==0){
-            return HomeFragment()
+            return  Fragment1()
         }
         else if(position==1){
             return AddFragment()
         }
         else{
             return ProfileFragment()
+
         }
 
 

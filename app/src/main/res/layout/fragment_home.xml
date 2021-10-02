@@ -20,6 +20,20 @@
             android:textSize="16sp" />
     </LinearLayout>
 
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="kr.ac.mjc.footprint.fragment_home">
+
+        <!-- TODO: Update blank fragment layout -->
+        <RelativeLayout
+            android:id="@+id/map_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></RelativeLayout>
+
+    </FrameLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list_rv"
         android:layout_width="match_parent"
