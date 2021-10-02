@@ -4,78 +4,45 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RelativeLayout
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.firestore.DocumentChange
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
+import net.daum.mf.map.api.MapPOIItem
+import net.daum.mf.map.api.MapPoint
 import net.daum.mf.map.api.MapView
 
-
 class HomeFragment: Fragment() {
-
-    lateinit var listRv:RecyclerView
-    lateinit var homeAdapter:HomeAdapter
-    lateinit var postList:ArrayList<Post>
-    //파이어스토어를 이용해서 데이터를 가져온다
-    lateinit var firestore:FirebaseFirestore
-
-
-
-
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+    public override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        var view=inflater.inflate(R.layout.fragment_home,container,false)
-        listRv=view.findViewById(R.id.list_rv) //뷰가 생성되기 전
-         return view;
+        // Inflate the layout for this fragment
+        val v: View = inflater.inflate(R.layout.fragment_home, container, false)
 
+        //지도
+        val mapView: MapView = MapView(getActivity())
+        val mapViewContainer: ViewGroup = v.findViewById<View>(R.id.map_view) as ViewGroup
+        mapViewContainer.addView(mapView)
 
+        // 중심점 변경 - 예제 좌표는 서울 남산
+        mapView.setMapCenterPoint(
+            MapPoint.mapPointWithGeoCoord(
+                37.54892296550104,
+                126.99089033876304
+            ), true
+        )
 
+        // 줌 레벨 변경
+        mapView.setZoomLevel(4, true)
 
+        //마커 찍기
+        val MARKER_POINT: MapPoint =
+            MapPoint.mapPointWithGeoCoord(37.54892296550104, 126.99089033876304)
+        val marker: MapPOIItem = MapPOIItem()
+        marker.setItemName("Default Marker")
+        marker.setTag(0)
+        marker.setMapPoint(MARKER_POINT)
+        marker.setMarkerType(MapPOIItem.MarkerType.BluePin) // 기본으로 제공하는 BluePin 마커 모양.
+        marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin) // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
+        mapView.addPOIItem(marker)
+        return v
     }
-
-
-
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        firestore= FirebaseFirestore.getInstance()
-        postList=ArrayList<Post>()
-        homeAdapter=HomeAdapter(activity!!,postList)
-        listRv.adapter=homeAdapter
-        listRv.layoutManager=LinearLayoutManager(activity)
-        //파이어스토어에서 포스트 콜렉션
-
-
-
-
-
-
-
-        firestore.collection("Post") //홈 게시글 올릴 때 파이어스토어의 Post 에서 가져온다.
-                .orderBy("uploadDate",Query.Direction.ASCENDING)
-                .addSnapshotListener { value, error ->
-                    if(value!=null){
-                        for(dc in value.documentChanges) {
-                            //생성된 것에만 넣어준다
-                            if (dc.type == DocumentChange.Type.ADDED) {
-                                var post = dc.document.toObject(Post::class.java)
-                                postList.add(0,post) //0번째에 넣겠다.
-                            }
-                        }
-                        homeAdapter.notifyDataSetChanged()
-                    }
-
-                }
-
-
-    }
-
-
 }
