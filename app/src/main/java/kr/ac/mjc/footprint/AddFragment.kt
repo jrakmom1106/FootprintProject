@@ -37,7 +37,7 @@ class AddFragment:Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         //layout을 가져와서 view 로 리턴
-        var view=inflater.inflate(R.layout.fragment_add,container,false)
+        var view=inflater.inflate(R.layout.activity_add,container,false)
         //가져온 뷰에 위젯들이 있기 떄문에 찾아서 넣어준다.
         loadingPb=view.findViewById(R.id.loading_pb)
         textEt=view.findViewById(R.id.text_et)

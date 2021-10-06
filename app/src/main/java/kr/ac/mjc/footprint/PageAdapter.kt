@@ -11,7 +11,7 @@ class PageAdapter(fragmentManager: FragmentManager):FragmentPagerAdapter(fragmen
             return  HomeFragment()
         }
         else if(position==1){
-            return AddFragment()
+            return AddFragment_1()
         }
         else{
             return ProfileFragment()
