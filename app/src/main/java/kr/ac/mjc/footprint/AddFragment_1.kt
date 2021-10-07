@@ -7,14 +7,19 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import de.hdodenhof.circleimageview.CircleImageView
 
 
@@ -22,6 +27,7 @@ class AddFragment_1:Fragment() {
     lateinit var profileIv: CircleImageView
     lateinit var nameTv: TextView
     lateinit var diaryRv: RecyclerView
+
     lateinit var auth: FirebaseAuth //로그인한 사용자
     lateinit var firestore: FirebaseFirestore
 
@@ -37,16 +43,13 @@ class AddFragment_1:Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?{
         var view = inflater.inflate(R.layout.fragment_add_1,container, false)
 
-        profileIv = view.findViewById(R.id.profile_iv)
-        nameTv = view.findViewById(R.id.name_tv)
         diaryRv = view.findViewById(R.id.diary_rv)
-
-        income_text = view.findViewById(R.id.income_tv)
-        exp_text = view.findViewById(R.id.exp_tv)
         fab = view.findViewById(R.id.fab)
 
-        auth = FirebaseAuth.getInstance()
-        firestore = FirebaseFirestore.getInstance()
+        profileIv = view.findViewById(R.id.profile_iv)
+        nameTv = view.findViewById(R.id.name_tv)
+        income_text = view.findViewById(R.id.income_tv)
+        exp_text = view.findViewById(R.id.exp_tv)
 
         return view;
     }
@@ -54,14 +57,37 @@ class AddFragment_1:Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        auth = FirebaseAuth.getInstance()
+        firestore = FirebaseFirestore.getInstance()
+
+        postList = ArrayList<Post>()
+        addAdapter = AddAdapter(activity!!,postList)
+
+        diaryRv.adapter = addAdapter
+        diaryRv.layoutManager = LinearLayoutManager(activity)
+
         fab.setOnClickListener {
             var intent = Intent(activity,AddActivity::class.java)
             startActivity(intent)
         }
-        updateProfile()
 
-//        postList = ArrayList<Post>()
-//        addAdapter = AddAdapter(activity!!, postList)
+        firestore.collection("Post") //홈 게시글 올릴 때 파이어스토어의 Post 에서 가져온다.
+            .orderBy("uploadDate", Query.Direction.ASCENDING)
+            .addSnapshotListener { value, error ->
+                if(value!=null){
+                    for(dc in value.documentChanges) {
+                        //생성된 것에만 넣어준다
+                        if (dc.type == DocumentChange.Type.ADDED) {
+                            var post = dc.document.toObject(Post::class.java)
+                            postList.add(0,post) //0번째에 넣겠다.
+                        }
+                    }
+                    addAdapter.notifyDataSetChanged()
+                }
+
+            }
+
+        updateProfile()
     }
 
     fun updateProfile(){
@@ -80,6 +106,7 @@ class AddFragment_1:Fragment() {
                         Glide.with(profileIv).load(user?.profileUrl).into(profileIv)
                     }
                 }
+                addAdapter.notifyDataSetChanged()
             }
     }
 

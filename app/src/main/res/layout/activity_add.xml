@@ -35,7 +35,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/text_et"
+            android:id="@+id/texttitle_et"
             android:layout_width="375dp"
             android:layout_height="48dp"
             android:layout_marginTop="16dp"
@@ -57,7 +57,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
         <EditText
-            android:id="@+id/project_name"
+            android:id="@+id/content_et"
             android:layout_width="375dp"
             android:layout_height="120dp"
             android:layout_marginTop="44dp"
@@ -73,7 +73,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.576"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_et" />
+            app:layout_constraintTop_toBottomOf="@+id/texttitle_et" />
 
         <TextView
             android:id="@+id/textView18"
@@ -97,12 +97,12 @@
             android:layout_marginBottom="16dp"
             android:text="내용"
             android:textColor="#252525"
-            app:layout_constraintBottom_toTopOf="@+id/project_name"
+            app:layout_constraintBottom_toTopOf="@+id/content_et"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_et" />
+            app:layout_constraintTop_toBottomOf="@+id/texttitle_et" />
 
         <EditText
-            android:id="@+id/project_num"
+            android:id="@+id/memo_et"
             android:layout_width="375dp"
             android:layout_height="93dp"
             android:layout_marginStart="8dp"
@@ -131,7 +131,7 @@
             android:background="@drawable/custom_login_btn"
             android:text="업로드"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_et" />
+            app:layout_constraintTop_toBottomOf="@+id/texttitle_et" />
 
         <TextView
             android:id="@+id/textView11"
@@ -154,7 +154,7 @@
             android:layout_marginTop="24dp"
             android:text="오늘 지출"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/project_name" />
+            app:layout_constraintTop_toBottomOf="@+id/content_et" />
 
         <TextView
             android:id="@+id/textView14"
@@ -168,7 +168,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
         <EditText
-            android:id="@+id/editTextTextPersonName"
+            android:id="@+id/income_et"
             android:layout_width="250dp"
             android:layout_height="48dp"
             android:layout_marginStart="16dp"
@@ -179,10 +179,10 @@
             android:inputType="textPersonName"
             android:textColor="#49B13D"
             app:layout_constraintStart_toEndOf="@+id/textView10"
-            app:layout_constraintTop_toBottomOf="@+id/project_name" />
+            app:layout_constraintTop_toBottomOf="@+id/content_et" />
 
         <EditText
-            android:id="@+id/editTextTextPersonName2"
+            android:id="@+id/exp_et"
             android:layout_width="250dp"
             android:layout_height="48dp"
             android:layout_marginStart="16dp"
@@ -193,7 +193,7 @@
             android:inputType="textPersonName"
             android:textColor="#FD0303"
             app:layout_constraintStart_toEndOf="@+id/textView14"
-            app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
+            app:layout_constraintTop_toBottomOf="@+id/income_et" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -18,11 +18,11 @@ class HomeAdapter(var context:Context,var postList:ArrayList<Post>):RecyclerView
         var nameTv:TextView= itemView.findViewById(R.id.name_tv)
         var imageIv:ImageView=itemView.findViewById(R.id.image_iv)
         var textTv:TextView=itemView.findViewById(R.id.text_tv)
-        var projectName:TextView=itemView.findViewById(R.id.project_name)
-        var projectNum:TextView=itemView.findViewById(R.id.project_num)
+        var projectName:TextView=itemView.findViewById(R.id.content_et)
+        var projectNum:TextView=itemView.findViewById(R.id.memo_et)
 
 
-        fun bind(post:Post){
+        /*fun bind(post:Post){
 
             textTv.text=post.text
             projectName.text=post.projectname
@@ -38,7 +38,7 @@ class HomeAdapter(var context:Context,var postList:ArrayList<Post>):RecyclerView
 
                         //레이아웃에 배치하도록 만들어주는 소스코드였다.
                     }
-        }
+        }*/
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeAdapter.ViewHolder {
@@ -56,7 +56,7 @@ class HomeAdapter(var context:Context,var postList:ArrayList<Post>):RecyclerView
     override fun onBindViewHolder(holder: HomeAdapter.ViewHolder, position: Int) {
         //바인드로 호출해주면 된다.
         var post=postList[position]
-        holder.bind(post)
+        //holder.bind(post)
     }
 
 

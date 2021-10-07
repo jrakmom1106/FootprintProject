@@ -2,7 +2,6 @@ package kr.ac.mjc.footprint
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent
-import android.content.Intent.ACTION_PICK
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -40,12 +39,12 @@ class AddFragment:Fragment() {
         var view=inflater.inflate(R.layout.activity_add,container,false)
         //가져온 뷰에 위젯들이 있기 떄문에 찾아서 넣어준다.
         loadingPb=view.findViewById(R.id.loading_pb)
-        textEt=view.findViewById(R.id.text_et)
+        textEt=view.findViewById(R.id.texttitle_et)
         submitBtn=view.findViewById(R.id.submit_btn)
 
             //추가
-        projectname=view.findViewById(R.id.project_name)
-        projectnum=view.findViewById(R.id.project_num)
+        projectname=view.findViewById(R.id.content_et)
+        projectnum=view.findViewById(R.id.memo_et)
 
 
 
@@ -86,6 +85,7 @@ class AddFragment:Fragment() {
 
 
             //업로드 진행
+            /*
             startLoading()
             var fileName=UUID.randomUUID().toString() //파일을 uuid를 통해 새로 생성
             storage.getReference().child("post").child(fileName)  //이미지 폴더를 새로 만든다
@@ -107,7 +107,7 @@ class AddFragment:Fragment() {
                                     }
 
                         }
-                    }
+                    }*/
         }
 
 
