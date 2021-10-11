@@ -108,14 +108,11 @@
         tools:layout_editor_absoluteX="0dp">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/diary_rv"
+            android:id="@+id/note_rv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="100dp"
-            android:paddingBottom="?attr/actionBarSize">
-
-        </androidx.recyclerview.widget.RecyclerView>
-
+            android:paddingBottom="?attr/actionBarSize" />
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

@@ -46,31 +46,10 @@ class MainActivity : AppCompatActivity() {
         //아이콘 버그 해결
         tabLayout.getTabAt(0)?.setIcon(R.drawable.baseline_home_black_48)?.setText("홈")
         tabLayout.getTabAt(1)?.setIcon(R.drawable.baseline_add_black_48)?.setText("모집 공고")
-        tabLayout.getTabAt(2)?.setIcon(R.drawable.baseline_perm_identity_black_48)?.setText("마이페이지")
-
-        getHashKey();
-
+        tabLayout.getTabAt(2)?.setIcon(R.drawable.outline_note_black_48)?.setText("다이어리")
+        tabLayout.getTabAt(3)?.setIcon(R.drawable.baseline_perm_identity_black_48)?.setText("마이페이지")
 
 
-
-    }
-    private fun getHashKey() {
-        var packageInfo: PackageInfo? = null
-        try {
-            packageInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
-        } catch (e: PackageManager.NameNotFoundException) {
-            e.printStackTrace()
-        }
-        if (packageInfo == null) Log.e("KeyHash", "KeyHash:null")
-        for (signature in packageInfo!!.signatures) {
-            try {
-                val md = MessageDigest.getInstance("SHA")
-                md.update(signature.toByteArray())
-                Log.d("KeyHash", Base64.encodeToString(md.digest(), Base64.DEFAULT))
-            } catch (e: NoSuchAlgorithmException) {
-                Log.e("KeyHash", "Unable to get MessageDigest. signature=$signature", e)
-            }
-        }
     }
 
 

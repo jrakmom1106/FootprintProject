@@ -19,16 +19,16 @@ import com.google.firebase.firestore.Query
 import de.hdodenhof.circleimageview.CircleImageView
 
 
-class AddFragment_1:Fragment() {
+class NoteFragment:Fragment() {
     lateinit var profileIv: CircleImageView
     lateinit var nameTv: TextView
-    lateinit var diaryRv: RecyclerView
+    lateinit var noteRv: RecyclerView
 
     lateinit var auth: FirebaseAuth //로그인한 사용자
     lateinit var firestore: FirebaseFirestore
 
     lateinit var postList:ArrayList<Post> //이후 수업떄 가져옴
-    lateinit var addAdapter:AddAdapter
+    lateinit var noteAdapter:NoteAdapter
 
     lateinit var income_text: TextView
     lateinit var exp_text: TextView
@@ -37,9 +37,9 @@ class AddFragment_1:Fragment() {
     val REQ_CHANGE_PROFILE = 2000
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?{
-        var view = inflater.inflate(R.layout.fragment_add_1,container, false)
+        var view = inflater.inflate(R.layout.fragment_note,container, false)
 
-        diaryRv = view.findViewById(R.id.diary_rv)
+        noteRv = view.findViewById(R.id.note_rv)
         fab = view.findViewById(R.id.fab)
 
         return view;
@@ -52,10 +52,10 @@ class AddFragment_1:Fragment() {
         firestore = FirebaseFirestore.getInstance()
 
         postList = ArrayList<Post>()
-        addAdapter = AddAdapter(requireActivity(),postList)
+        noteAdapter = NoteAdapter(requireActivity(),postList)
 
-        diaryRv.adapter = addAdapter
-        diaryRv.layoutManager = LinearLayoutManager(activity)
+        noteRv.adapter = noteAdapter
+        noteRv.layoutManager = LinearLayoutManager(activity)
 
         // 리스트뷰 재호출 이후 각 UI 초기화.
         profileIv = view.findViewById(R.id.profile_iv)
@@ -70,6 +70,7 @@ class AddFragment_1:Fragment() {
 
         firestore.collection("Post") //홈 게시글 올릴 때 파이어스토어의 Post 에서 가져온다.
             .orderBy("uploadDate", Query.Direction.ASCENDING)
+            .whereEqualTo("userId",auth.currentUser?.email)
             .addSnapshotListener { value, error ->
                 if(value!=null){
                     for(dc in value.documentChanges) {
@@ -79,7 +80,7 @@ class AddFragment_1:Fragment() {
                             postList.add(0,post) //0번째에 넣겠다.
                         }
                     }
-                    addAdapter.notifyDataSetChanged()
+                    noteAdapter.notifyDataSetChanged()
                 }
 
             }
@@ -103,7 +104,7 @@ class AddFragment_1:Fragment() {
                         Glide.with(profileIv).load(user?.profileUrl).into(profileIv)
                     }
                 }
-                addAdapter.notifyDataSetChanged()
+                noteAdapter.notifyDataSetChanged()
             }
     }
 
