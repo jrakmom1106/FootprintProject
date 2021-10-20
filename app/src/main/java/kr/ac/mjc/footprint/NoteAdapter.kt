@@ -1,11 +1,14 @@
 package kr.ac.mjc.footprint
 
+import android.app.Fragment
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.firebase.firestore.FirebaseFirestore
@@ -29,6 +32,10 @@ class NoteAdapter(var context: Context, var postList:ArrayList<Post>): RecyclerV
             expTv2.text = post.expEt
             dateItem.text = post.uploadDate.toString()
 
+            itemView.setOnClickListener {
+                val intent = Intent(itemView?.context,DetailActivity::class.java)
+                startActivity(itemView?.context,intent,null)
+            }
         }
     }
 

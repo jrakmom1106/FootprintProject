@@ -27,6 +27,7 @@
         <activity android:name=".MainActivity"></activity>
         <activity android:name=".AddActivity" />
         <activity android:name=".MapActivity"/>
+        <activity android:name=".DetailActivity"/>
 
         <meta-data android:name="com.kakao.sdk.AppKey" android:value="817d547986882853307da4cf4f7d44b3"/>
     </application>
