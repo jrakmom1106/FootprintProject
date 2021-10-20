@@ -68,7 +68,13 @@ class MapActivity() : AppCompatActivity(), CurrentLocationEventListener,
         //mMapView.setDaumMapApiKey(MapApiConst.DAUM_MAPS_ANDROID_APP_API_KEY);
 
 
-        listAdapter.setItemClickListener(object: ListAdapter.OnItemClickListener {
+
+
+
+
+
+
+        listAdapter.setItemClickListener(object : ListAdapter.OnItemClickListener {
             override fun onClick(v: View, position: Int) {
                 val mapPoint = MapPoint.mapPointWithGeoCoord(listItems[position].y, listItems[position].x)
                 mMapView!!.setMapCenterPointAndZoomLevel(mapPoint, 1, true)
@@ -97,7 +103,7 @@ class MapActivity() : AppCompatActivity(), CurrentLocationEventListener,
         }
 
 
-        mMapView!!.setCurrentLocationEventListener(this)
+
 
 
 
@@ -120,25 +126,20 @@ class MapActivity() : AppCompatActivity(), CurrentLocationEventListener,
         mMapView!!.addPOIItem(marker)
         */
 
+     mMapView!!.setCustomCurrentLocationMarkerTrackingImage(R.drawable.makerme90,MapPOIItem.ImageOffset(30,30))
 
-
-
-
-        /*
-
+/*
         val marker = MapPOIItem()
-        val mapPoint = MapPoint.mapPointWithGeoCoord(126.922337873383, 37.6189517907872)
+        val mapPoint = mMapView!!.setCurrentLocationEventListener(this)
         marker.itemName = "Default Marker"
         marker.tag = 0
-        marker.mapPoint = mapPoint
+        marker.mapPoint = mMapView!!.setCurrentLocationEventListener(this)
         marker.markerType = MapPOIItem.MarkerType.BluePin // 기본으로 제공하는 BluePin 마커 모양.
-
         marker.selectedMarkerType = MapPOIItem.MarkerType.RedPin // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
-
-
         mMapView!!.addPOIItem(marker)
 
-         */
+
+*/
 
 
         if (!checkLocationServicesStatus()) {
@@ -147,16 +148,22 @@ class MapActivity() : AppCompatActivity(), CurrentLocationEventListener,
             checkRunTimePermission()
         }
 
+
+        mMapView!!.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
+        mMapView!!.setCurrentLocationEventListener(this)
+
+
     }
 
 
-    private fun searchKeyword(keyword: String, Page:Int) {
+
+    private fun searchKeyword(keyword: String, Page: Int) {
         val retrofit = Retrofit.Builder()   // Retrofit 구성
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
         val api = retrofit.create(KakaoAPI::class.java)   // 통신 인터페이스를 객체로 생성
-        val call = api.getSearchKeyword(API_KEY, keyword,Page)   // 검색 조건 입력
+        val call = api.getSearchKeyword(API_KEY, keyword, Page)   // 검색 조건 입력
 
         // API 서버에 요청
         call.enqueue(object : Callback<ResultSearchKeyword> {
@@ -395,6 +402,7 @@ class MapActivity() : AppCompatActivity(), CurrentLocationEventListener,
         private val LOG_TAG = "MainActivity"
         private val GPS_ENABLE_REQUEST_CODE = 2001
         private val PERMISSIONS_REQUEST_CODE = 100
+
         const val BASE_URL = "https://dapi.kakao.com/"
         const val API_KEY = "KakaoAK 715aa7ab55967eb2cf591a7771968270"  // REST API 키
 
