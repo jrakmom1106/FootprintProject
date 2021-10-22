@@ -14,9 +14,11 @@ import com.bumptech.glide.Glide
 import com.google.firebase.firestore.FirebaseFirestore
 import java.time.Year
 
-class NoteAdapter(var context: Context, var postList:ArrayList<Post>): RecyclerView.Adapter<NoteAdapter.ViewHolder>() {
+class NoteAdapter(var context: Context, var postList:ArrayList<Post2>): RecyclerView.Adapter<NoteAdapter.ViewHolder>() {
 
-    inner class ViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
+    var onItemClickListener:OnItemClickListener?=null
+
+    inner class ViewHolder(itemView: View):RecyclerView.ViewHolder(itemView!!){
         // item_add
         var titleTv: TextView = itemView.findViewById(R.id.title_tv)
         var textTv2: TextView =itemView.findViewById(R.id.text_tv2)
@@ -24,7 +26,7 @@ class NoteAdapter(var context: Context, var postList:ArrayList<Post>): RecyclerV
         var expTv2: TextView = itemView.findViewById(R.id.exp_tv2)
         var dateItem: TextView = itemView.findViewById(R.id.item_date)
 
-        fun bind(post:Post){
+        fun bind(post:Post2){
 
             titleTv.text = post.textTitleEt
             textTv2.text = post.contentEt
@@ -32,11 +34,22 @@ class NoteAdapter(var context: Context, var postList:ArrayList<Post>): RecyclerV
             expTv2.text = post.expEt
             dateItem.text = post.uploadDate.toString()
 
+//            itemView.setOnClickListener {
+//                val intent = Intent(itemView?.context,DetailActivity::class.java)
+//                intent.putExtra("id",post.id)
+//                startActivity(itemView?.context,intent,null)
+//            }
             itemView.setOnClickListener {
+                onItemClickListener?.onItemClick(post)
                 val intent = Intent(itemView?.context,DetailActivity::class.java)
+                intent.putExtra("id",post.id)
                 startActivity(itemView?.context,intent,null)
             }
         }
+    }
+
+    interface OnItemClickListener{
+        fun onItemClick(post:Post2)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteAdapter.ViewHolder {

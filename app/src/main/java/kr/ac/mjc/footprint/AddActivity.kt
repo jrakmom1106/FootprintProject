@@ -60,8 +60,8 @@ class AddActivity:AppCompatActivity() {
             }
 
             startLoading()
-            var post = Post(title,content,income,exp,memo,auth.currentUser?.email!!)
-            firestore.collection("Post")
+            var post = Post2(title,content,income,exp,memo,auth.currentUser?.email!!)//
+            firestore.collection("Post2")//edit
                 .document().set(post)
                 .addOnSuccessListener {
                     endLoading()

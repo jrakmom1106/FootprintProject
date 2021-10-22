@@ -19,7 +19,7 @@ import com.google.firebase.firestore.Query
 import de.hdodenhof.circleimageview.CircleImageView
 
 
-class NoteFragment:Fragment() {
+class NoteFragment:Fragment(), NoteAdapter.OnItemClickListener {
     lateinit var profileIv: CircleImageView
     lateinit var nameTv: TextView
     lateinit var noteRv: RecyclerView
@@ -27,8 +27,9 @@ class NoteFragment:Fragment() {
     lateinit var auth: FirebaseAuth //로그인한 사용자
     lateinit var firestore: FirebaseFirestore
 
-    lateinit var postList:ArrayList<Post> //이후 수업떄 가져옴
+    //lateinit var postList:ArrayList<Post> //이후 수업떄 가져옴
     lateinit var noteAdapter:NoteAdapter
+    lateinit var postList2:ArrayList<Post2>//
 
     lateinit var income_text: TextView
     lateinit var exp_text: TextView
@@ -51,8 +52,9 @@ class NoteFragment:Fragment() {
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
 
-        postList = ArrayList<Post>()
-        noteAdapter = NoteAdapter(requireActivity(),postList)
+        //postList = ArrayList<Post>()
+        postList2 = ArrayList<Post2>()//
+        noteAdapter = NoteAdapter(requireActivity(),postList2)
 
         noteRv.adapter = noteAdapter
         noteRv.layoutManager = LinearLayoutManager(activity)
@@ -68,7 +70,7 @@ class NoteFragment:Fragment() {
             startActivity(intent)
         }
 
-        firestore.collection("Post") //홈 게시글 올릴 때 파이어스토어의 Post 에서 가져온다.
+        firestore.collection("Post2") //홈 게시글 올릴 때 파이어스토어의 Post 에서 가져온다.
             .orderBy("uploadDate", Query.Direction.ASCENDING)
             .whereEqualTo("userId",auth.currentUser?.email)
             .addSnapshotListener { value, error ->
@@ -76,8 +78,9 @@ class NoteFragment:Fragment() {
                     for(dc in value.documentChanges) {
                         //생성된 것에만 넣어준다
                         if (dc.type == DocumentChange.Type.ADDED) {
-                            var post = dc.document.toObject(Post::class.java)
-                            postList.add(0,post) //0번째에 넣겠다.
+                            var post = dc.document.toObject(Post2::class.java)
+                            post.id = dc.document.id
+                            postList2.add(/*0,*/post) //0번째에 넣겠다.
                         }
                     }
                     noteAdapter.notifyDataSetChanged()
@@ -108,12 +111,17 @@ class NoteFragment:Fragment() {
             }
     }
 
+    override fun onItemClick(post: Post2) {
+        val intent2 = Intent(activity,DetailActivity::class.java)
+        intent2.putExtra("id",post.id)
+        startActivity(intent2)
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(requestCode==REQ_CHANGE_PROFILE && resultCode == RESULT_OK){
             updateProfile()
         }
     }
-
 
 }
