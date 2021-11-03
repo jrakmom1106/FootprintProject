@@ -425,7 +425,7 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
                                             MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(x, y);
                                             marker.setMapPoint(mapPoint);
                                             marker.setMarkerType(MapPOIItem.MarkerType.CustomImage); // 마커타입을 커스텀 마커로 지정.
-                                            marker.setCustomImageResourceId(R.drawable.madic); // 마커 이미지.
+                                            marker.setCustomImageResourceId(R.drawable.hospital); // 마커 이미지.
                                             marker.setCustomImageAutoscale(false); // hdpi, xhdpi 등 안드로이드 플랫폼의 스케일을 사용할 경우 지도 라이브러리의 스케일 기능을 꺼줌.
                                             marker.setCustomImageAnchor(0.5f, 1.0f);
                                             mMapView.addPOIItem(marker);
