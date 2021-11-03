@@ -29,7 +29,6 @@ class AddActivity:AppCompatActivity() {
     lateinit var storage: FirebaseStorage
     lateinit var firestore: FirebaseFirestore
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add)
@@ -53,6 +52,7 @@ class AddActivity:AppCompatActivity() {
             var income = incomeEt.text.toString()
             var exp = expEt.text.toString()
             var memo = memoEt.text.toString()
+            //var uuid = UUID.randomUUID()
 
             if(title.length==0){
                 Toast.makeText(this,"제목을 입력해주세요", Toast.LENGTH_SHORT).show() //아무것도 안입력시

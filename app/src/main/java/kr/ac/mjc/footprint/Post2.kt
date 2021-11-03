@@ -1,20 +1,19 @@
 package kr.ac.mjc.footprint
 
+import android.text.Editable
 import java.util.*
 
 class Post2 (
     //var imageUrl:String="", // 업로드한 이미지의 경로
     var textTitleEt:String="", //입력한 문구 저장 변수
     var contentEt:String="",
-    var incomeEt:String="",
-    var expEt: String = "",
+    var incomeEt: String="",
+    var expEt: String="",
     var memoEt: String = "",
     var userId:String="", //포스트를 업로드한 사용자의 아이디
     var id:String?=null,
     var uploadDate: Date = Date() //업로드한 시간. > sns 에서 중요하고 정렬이 되게 하기 위함
-        ){
-
-}
+        ){}
 
 /*{
     constructor(){}

@@ -26,6 +26,41 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:id="@+id/name_tv2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="52dp"
+            android:layout_marginLeft="52dp"
+            android:layout_marginTop="60dp"
+            android:text="사용자명"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/profile_iv2"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/id_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="52dp"
+            android:layout_marginLeft="52dp"
+            android:layout_marginTop="96dp"
+            android:text="계정"
+            app:layout_constraintStart_toEndOf="@+id/profile_iv2"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profile_iv2"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="64dp"
+            android:layout_marginLeft="64dp"
+            android:layout_marginTop="64dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/baseline_perm_identity_black_18" />
+
         <View
             android:id="@+id/rectangle_6"
             android:layout_width="164dp"
@@ -34,7 +69,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="137dp"
+            android:layout_marginTop="168dp"
             android:background="@drawable/rectangle6"
             app:layout_constraintStart_toStartOf="@+id/rectangle8"
             app:layout_constraintTop_toTopOf="@+id/rectangle8" />
@@ -137,7 +172,8 @@
             android:layout_marginTop="6dp"
             android:text="test"
             android:textColor="#FFFFFF"
-            android:textSize="12sp"
+            android:textSize="14sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/rect"
             app:layout_constraintTop_toBottomOf="@+id/textView22" />
 
@@ -147,7 +183,7 @@
             android:layout_height="80dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="136dp"
+            android:layout_marginTop="168dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
             android:background="@drawable/rectangle_red"
@@ -252,7 +288,8 @@
             android:layout_marginTop="6dp"
             android:text="test"
             android:textColor="#FFFFFF"
-            android:textSize="12sp"
+            android:textSize="14sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/rect2"
             app:layout_constraintTop_toBottomOf="@+id/textView_22" />
 
@@ -262,13 +299,15 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="169dp"
             android:layout_marginLeft="169dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="168dp"
             android:layout_marginRight="168dp"
             android:text="다이어리"
             android:textColor="#91919F"
             android:textSize="20sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@+id/rectangle8"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/rectangle8"
             app:layout_constraintTop_toTopOf="@+id/rectangle8" />
 
@@ -293,7 +332,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:text="제목"
-                android:textSize="16sp" />
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/detail_title"
@@ -310,7 +351,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="내용"
-                android:textSize="16sp" />
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/detail_diary"
@@ -327,7 +370,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="지출 · 수입 메모" />
+                android:text="지출 · 수입 메모"
+                android:textColor="#000000"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/detail_memo"
