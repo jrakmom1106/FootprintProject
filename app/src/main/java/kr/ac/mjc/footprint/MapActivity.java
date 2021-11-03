@@ -42,8 +42,10 @@ import java.util.ArrayList;
 import kr.ac.mjc.footprint.adapter.LocationAdapter;
 import kr.ac.mjc.footprint.api.ApiClient;
 import kr.ac.mjc.footprint.api.ApiInterface;
+import kr.ac.mjc.footprint.model.address_search.AddressSearch;
 import kr.ac.mjc.footprint.model.category_search.CategoryResult;
 import kr.ac.mjc.footprint.model.category_search.Document;
+import kr.ac.mjc.footprint.model.research.SearchResult;
 import kr.ac.mjc.footprint.utils.BusProvider;
 import kr.ac.mjc.footprint.utils.IntentKey;
 import retrofit2.Call;
@@ -75,13 +77,10 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
 
     ArrayList<Document> bigMartList = new ArrayList<>(); //대형마트 MT1
     ArrayList<Document> gs24List = new ArrayList<>(); //편의점 CS2
-    ArrayList<Document> schoolList = new ArrayList<>(); //학교 SC4
-    ArrayList<Document> academyList = new ArrayList<>(); //학원 AC5
-    ArrayList<Document> subwayList = new ArrayList<>(); //지하철 SW8
     ArrayList<Document> bankList = new ArrayList<>(); //은행 BK9
     ArrayList<Document> hospitalList = new ArrayList<>(); //병원 HP8
     ArrayList<Document> pharmacyList = new ArrayList<>(); //약국 PM9
-    ArrayList<Document> cafeList = new ArrayList<>(); //카페
+
 
     ArrayList<Document> documentArrayList = new ArrayList<>(); //지역명 검색 결과 리스트
 
@@ -92,6 +91,7 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         setContentView(R.layout.activity_map);
         bus.register(this); //정류소 등록
         initView();
@@ -111,6 +111,9 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
         stopTrackingFab = findViewById(R.id.fab_stop_tracking);
         mLoaderLayout = findViewById(R.id.loaderLayout);
         mMapView = new MapView(this);
+
+        mMapView.setCustomCurrentLocationMarkerTrackingImage(R.drawable.makerme90, new MapPOIItem.ImageOffset(30,30));
+
         mMapViewContainer = findViewById(R.id.map_mv_mapcontainer);
         mMapViewContainer.addView(mMapView);
         recyclerView = findViewById(R.id.map_recyclerview);
@@ -139,7 +142,10 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
         mMapView.setCurrentLocationEventListener(this);
         //setCurrentLocationTrackingMode (지도랑 현재위치 좌표 찍어주고 따라다닌다.)
         mMapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
+        mMapView.setCustomCurrentLocationMarkerTrackingImage(R.drawable.makerme90, new MapPOIItem.ImageOffset(30,30));
         mLoaderLayout.setVisibility(View.VISIBLE);
+
+
 
         // editText 검색 텍스처이벤트
         mSearchEdit.addTextChangedListener(new TextWatcher() {
@@ -217,6 +223,7 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
                         "\n2번 버튼: 현재위치 기준으로 주변환경 검색" +
                         "\n3번 버튼: 현재위치 추적 및 업데이트", FancyToast.LENGTH_SHORT, FancyToast.INFO, true).show();
                 anim();
+
                 break;
             case R.id.fab1: //아래버튼에서부터 1~3임
                 FancyToast.makeText(this, "현재위치 추적 시작", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, true).show();
@@ -224,6 +231,7 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
                 mLoaderLayout.setVisibility(View.VISIBLE);
                 isTrackingMode = true;
                 mMapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithHeading);
+                mMapView.setCustomCurrentLocationMarkerTrackingImage(R.drawable.makerme90, new MapPOIItem.ImageOffset(30,30));
                 anim();
                 stopTrackingFab.setVisibility(View.VISIBLE);
                 mLoaderLayout.setVisibility(View.GONE);
@@ -239,6 +247,7 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
                 mMapView.removeAllCircles();
                 requestSearchLocal(mCurrentLng, mCurrentLat);
                 mMapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
+                mMapView.setCustomCurrentLocationMarkerTrackingImage(R.drawable.makerme90, new MapPOIItem.ImageOffset(30,30));
                 break;
             case R.id.fab3:
                 isTrackingMode = false;
@@ -249,6 +258,7 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
                     mMapView.removeAllPOIItems();
                     mMapView.removeAllCircles();
                     mMapView.addPOIItem(searchMarker);
+                    mMapView.setCustomCurrentLocationMarkerTrackingImage(R.drawable.makerme90, new MapPOIItem.ImageOffset(30,30));
                     requestSearchLocal(mSearchLng, mSearchLat);
                 } else {
                     FancyToast.makeText(this, "검색 먼저 해주세요", FancyToast.LENGTH_SHORT, FancyToast.ERROR, true).show();
@@ -260,13 +270,9 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
                 Intent detailIntent = new Intent(MapActivity.this, MapSearchDetailActivity.class);
                 detailIntent.putParcelableArrayListExtra(IntentKey.CATEGOTY_SEARCH_MODEL_EXTRA1, bigMartList);
                 detailIntent.putParcelableArrayListExtra(IntentKey.CATEGOTY_SEARCH_MODEL_EXTRA2, gs24List);
-                detailIntent.putParcelableArrayListExtra(IntentKey.CATEGOTY_SEARCH_MODEL_EXTRA3, schoolList);
-                detailIntent.putParcelableArrayListExtra(IntentKey.CATEGOTY_SEARCH_MODEL_EXTRA4, academyList);
-                detailIntent.putParcelableArrayListExtra(IntentKey.CATEGOTY_SEARCH_MODEL_EXTRA5, subwayList);
                 detailIntent.putParcelableArrayListExtra(IntentKey.CATEGOTY_SEARCH_MODEL_EXTRA6, bankList);
                 detailIntent.putParcelableArrayListExtra(IntentKey.CATEGOTY_SEARCH_MODEL_EXTRA7, hospitalList);
                 detailIntent.putParcelableArrayListExtra(IntentKey.CATEGOTY_SEARCH_MODEL_EXTRA8, pharmacyList);
-                detailIntent.putParcelableArrayListExtra(IntentKey.CATEGOTY_SEARCH_MODEL_EXTRA9, cafeList);
                 overridePendingTransition(R.anim.fade_in_splash, R.anim.fade_out_splash);
                 startActivity(detailIntent);
                 Log.d(TAG, "fab_detail");
@@ -274,6 +280,7 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
             case R.id.fab_stop_tracking:
                 isTrackingMode = false;
                 mMapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
+                mMapView.setCustomCurrentLocationMarkerTrackingImage(R.drawable.makerme90, new MapPOIItem.ImageOffset(30,30));
                 stopTrackingFab.setVisibility(View.GONE);
                 FancyToast.makeText(this, "현재위치 추적 종료", FancyToast.LENGTH_SHORT, FancyToast.SUCCESS, true).show();
                 break;
@@ -283,297 +290,180 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
     private void requestSearchLocal(double x, double y) {
         bigMartList.clear();
         gs24List.clear();
-        schoolList.clear();
-        academyList.clear();
-        subwayList.clear();
+
         bankList.clear();
         hospitalList.clear();
         pharmacyList.clear();
-        cafeList.clear();
+
         ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
+
+        //카테고리별 그룹 검색.
         Call<CategoryResult> call = apiInterface.getSearchCategory(getString(R.string.restapi_key), "MT1", x + "", y + "", 1000);
         call.enqueue(new Callback<CategoryResult>() {
-            @Override
-            public void onResponse(@NotNull Call<CategoryResult> call, @NotNull Response<CategoryResult> response) {
-                if (response.isSuccessful()) {
-                    assert response.body() != null;
-                    if (response.body().getDocuments() != null) {
-                        Log.d(TAG, "bigMartList Success");
-                        bigMartList.addAll(response.body().getDocuments());
-                    }
-                    call = apiInterface.getSearchCategory(getString(R.string.restapi_key), "CS2", x + "", y + "", 1000);
+        @Override
+        public void onResponse(@NotNull Call<CategoryResult> call, @NotNull Response<CategoryResult> response) {
+            if (response.isSuccessful()) {
+
+            assert response.body() != null;
+            if (response.body().getDocuments() != null) {
+                Log.d(TAG, "bigMartList Success");
+                bigMartList.addAll(response.body().getDocuments());
+            }
+
+
+                call = apiInterface.getSearchCategory(getString(R.string.restapi_key), "CS2", x + "", y + "", 1000);
+                call.enqueue(new Callback<CategoryResult>() {
+                @Override
+                public void onResponse(@NotNull Call<CategoryResult> call, @NotNull Response<CategoryResult> response) {
+                    if (response.isSuccessful()) {
+                        assert response.body() != null;
+                        Log.d(TAG, "gs24List Success");
+                        gs24List.addAll(response.body().getDocuments());
+
+
+                    call = apiInterface.getSearchCategory(getString(R.string.restapi_key), "BK9", x + "", y + "", 1000);
                     call.enqueue(new Callback<CategoryResult>() {
+                    @Override
+                    public void onResponse(@NotNull Call<CategoryResult> call, @NotNull Response<CategoryResult> response) {
+                        if (response.isSuccessful()) {
+                            assert response.body() != null;
+                            Log.d(TAG, "bankList Success");
+                            bankList.addAll(response.body().getDocuments());
+
+
+                        call = apiInterface.getSearchCategory(getString(R.string.restapi_key), "HP8", x + "", y + "", 1000);
+                        call.enqueue(new Callback<CategoryResult>() {
                         @Override
                         public void onResponse(@NotNull Call<CategoryResult> call, @NotNull Response<CategoryResult> response) {
                             if (response.isSuccessful()) {
                                 assert response.body() != null;
-                                Log.d(TAG, "gs24List Success");
-                                gs24List.addAll(response.body().getDocuments());
-                                call = apiInterface.getSearchCategory(getString(R.string.restapi_key), "SC4", x + "", y + "", 1000);
-                                call.enqueue(new Callback<CategoryResult>() {
-                                    @Override
-                                    public void onResponse(@NotNull Call<CategoryResult> call, @NotNull Response<CategoryResult> response) {
-                                        if (response.isSuccessful()) {
-                                            assert response.body() != null;
-                                            Log.d(TAG, "schoolList Success");
-                                            schoolList.addAll(response.body().getDocuments());
-                                            call = apiInterface.getSearchCategory(getString(R.string.restapi_key), "AC5", x + "", y + "", 1000);
-                                            call.enqueue(new Callback<CategoryResult>() {
-                                                @Override
-                                                public void onResponse(@NotNull Call<CategoryResult> call, @NotNull Response<CategoryResult> response) {
-                                                    if (response.isSuccessful()) {
-                                                        assert response.body() != null;
-                                                        Log.d(TAG, "academyList Success");
-                                                        academyList.addAll(response.body().getDocuments());
-                                                        call = apiInterface.getSearchCategory(getString(R.string.restapi_key), "SW8", x + "", y + "", 1000);
-                                                        call.enqueue(new Callback<CategoryResult>() {
-                                                            @Override
-                                                            public void onResponse(@NotNull Call<CategoryResult> call, @NotNull Response<CategoryResult> response) {
-                                                                if (response.isSuccessful()) {
-                                                                    assert response.body() != null;
-                                                                    Log.d(TAG, "subwayList Success");
-                                                                    subwayList.addAll(response.body().getDocuments());
-                                                                    call = apiInterface.getSearchCategory(getString(R.string.restapi_key), "BK9", x + "", y + "", 1000);
-                                                                    call.enqueue(new Callback<CategoryResult>() {
-                                                                        @Override
-                                                                        public void onResponse(@NotNull Call<CategoryResult> call, @NotNull Response<CategoryResult> response) {
-                                                                            if (response.isSuccessful()) {
-                                                                                assert response.body() != null;
-                                                                                Log.d(TAG, "bankList Success");
-                                                                                bankList.addAll(response.body().getDocuments());
-                                                                                call = apiInterface.getSearchCategory(getString(R.string.restapi_key), "HP8", x + "", y + "", 1000);
-                                                                                call.enqueue(new Callback<CategoryResult>() {
-                                                                                    @Override
-                                                                                    public void onResponse(@NotNull Call<CategoryResult> call, @NotNull Response<CategoryResult> response) {
-                                                                                        if (response.isSuccessful()) {
-                                                                                            assert response.body() != null;
-                                                                                            Log.d(TAG, "hospitalList Success");
-                                                                                            hospitalList.addAll(response.body().getDocuments());
-                                                                                            call = apiInterface.getSearchCategory(getString(R.string.restapi_key), "PM9", x + "", y + "", 1000);
-                                                                                            call.enqueue(new Callback<CategoryResult>() {
-                                                                                                @Override
-                                                                                                public void onResponse(@NotNull Call<CategoryResult> call, @NotNull Response<CategoryResult> response) {
-                                                                                                    if (response.isSuccessful()) {
-                                                                                                        assert response.body() != null;
-                                                                                                        Log.d(TAG, "pharmacyList Success");
-                                                                                                        pharmacyList.addAll(response.body().getDocuments());
-                                                                                                        call = apiInterface.getSearchCategory(getString(R.string.restapi_key), "CE7", x + "", y + "", 1000);
-                                                                                                        call.enqueue(new Callback<CategoryResult>() {
-                                                                                                            @Override
-                                                                                                            public void onResponse(@NotNull Call<CategoryResult> call, @NotNull Response<CategoryResult> response) {
-                                                                                                                if (response.isSuccessful()) {
-                                                                                                                    assert response.body() != null;
-                                                                                                                    Log.d(TAG, "cafeList Success");
-                                                                                                                    cafeList.addAll(response.body().getDocuments());
-                                                                                                                    //모두 통신 성공 시 circle 생성
-                                                                                                                    MapCircle circle1 = new MapCircle(
-                                                                                                                            MapPoint.mapPointWithGeoCoord(y, x), // center
-                                                                                                                            1000, // radius
-                                                                                                                            Color.argb(128, 255, 0, 0), // strokeColor
-                                                                                                                            Color.argb(128, 0, 255, 0) // fillColor
-                                                                                                                    );
-                                                                                                                    circle1.setTag(5678);
-                                                                                                                    mMapView.addCircle(circle1);
-                                                                                                                    Log.d("SIZE1", bigMartList.size() + "");
-                                                                                                                    Log.d("SIZE2", gs24List.size() + "");
-                                                                                                                    Log.d("SIZE3", schoolList.size() + "");
-                                                                                                                    Log.d("SIZE4", academyList.size() + "");
-                                                                                                                    Log.d("SIZE5", subwayList.size() + "");
-                                                                                                                    Log.d("SIZE6", bankList.size() + "");
-                                                                                                                    //마커 생성
-                                                                                                                    int tagNum = 10;
-                                                                                                                    for (Document document : bigMartList) {
-                                                                                                                        MapPOIItem marker = new MapPOIItem();
-                                                                                                                        marker.setItemName(document.getPlaceName());
-                                                                                                                        marker.setTag(tagNum++);
-                                                                                                                        double x = Double.parseDouble(document.getY());
-                                                                                                                        double y = Double.parseDouble(document.getX());
-                                                                                                                        //카카오맵은 참고로 new MapPoint()로  생성못함. 좌표기준이 여러개라 이렇게 메소드로 생성해야함
-                                                                                                                        MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(x, y);
-                                                                                                                        marker.setMapPoint(mapPoint);
-                                                                                                                        marker.setMarkerType(MapPOIItem.MarkerType.CustomImage); // 마커타입을 커스텀 마커로 지정.
-                                                                                                                        marker.setCustomImageResourceId(R.drawable.ic_big_mart_marker); // 마커 이미지.
-                                                                                                                        marker.setCustomImageAutoscale(false); // hdpi, xhdpi 등 안드로이드 플랫폼의 스케일을 사용할 경우 지도 라이브러리의 스케일 기능을 꺼줌.
-                                                                                                                        marker.setCustomImageAnchor(0.5f, 1.0f); // 마커 이미지중 기준이 되는 위치(앵커포인트) 지정 - 마커 이미지 좌측 상단 기준 x(0.0f ~ 1.0f), y(0.0f ~ 1.0f) 값.
-                                                                                                                        mMapView.addPOIItem(marker);
-                                                                                                                    }
-                                                                                                                    for (Document document : gs24List) {
-                                                                                                                        MapPOIItem marker = new MapPOIItem();
-                                                                                                                        marker.setItemName(document.getPlaceName());
-                                                                                                                        marker.setTag(tagNum++);
-                                                                                                                        double x = Double.parseDouble(document.getY());
-                                                                                                                        double y = Double.parseDouble(document.getX());
-                                                                                                                        //카카오맵은 참고로 new MapPoint()로  생성못함. 좌표기준이 여러개라 이렇게 메소드로 생성해야함
-                                                                                                                        MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(x, y);
-                                                                                                                        marker.setMapPoint(mapPoint);
-                                                                                                                        marker.setMarkerType(MapPOIItem.MarkerType.CustomImage); // 마커타입을 커스텀 마커로 지정.
-                                                                                                                        marker.setCustomImageResourceId(R.drawable.ic_24_mart_marker); // 마커 이미지.
-                                                                                                                        marker.setCustomImageAutoscale(false); // hdpi, xhdpi 등 안드로이드 플랫폼의 스케일을 사용할 경우 지도 라이브러리의 스케일 기능을 꺼줌.
-                                                                                                                        marker.setCustomImageAnchor(0.5f, 1.0f);
-                                                                                                                        mMapView.addPOIItem(marker);
-                                                                                                                    }
-                                                                                                                    for (Document document : schoolList) {
-                                                                                                                        MapPOIItem marker = new MapPOIItem();
-                                                                                                                        marker.setItemName(document.getPlaceName());
-                                                                                                                        marker.setTag(tagNum++);
-                                                                                                                        double x = Double.parseDouble(document.getY());
-                                                                                                                        double y = Double.parseDouble(document.getX());
-                                                                                                                        //카카오맵은 참고로 new MapPoint()로  생성못함. 좌표기준이 여러개라 이렇게 메소드로 생성해야함
-                                                                                                                        MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(x, y);
-                                                                                                                        marker.setMapPoint(mapPoint);
-                                                                                                                        marker.setMarkerType(MapPOIItem.MarkerType.CustomImage); // 마커타입을 커스텀 마커로 지정.
-                                                                                                                        marker.setCustomImageResourceId(R.drawable.ic_school_marker); // 마커 이미지.
-                                                                                                                        marker.setCustomImageAutoscale(false); // hdpi, xhdpi 등 안드로이드 플랫폼의 스케일을 사용할 경우 지도 라이브러리의 스케일 기능을 꺼줌.
-                                                                                                                        marker.setCustomImageAnchor(0.5f, 1.0f);
-                                                                                                                        mMapView.addPOIItem(marker);
-                                                                                                                    }
-                                                                                                                    for (Document document : academyList) {
-                                                                                                                        MapPOIItem marker = new MapPOIItem();
-                                                                                                                        marker.setItemName(document.getPlaceName());
-                                                                                                                        marker.setTag(tagNum++);
-                                                                                                                        double x = Double.parseDouble(document.getY());
-                                                                                                                        double y = Double.parseDouble(document.getX());
-                                                                                                                        //카카오맵은 참고로 new MapPoint()로  생성못함. 좌표기준이 여러개라 이렇게 메소드로 생성해야함
-                                                                                                                        MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(x, y);
-                                                                                                                        marker.setMapPoint(mapPoint);
-                                                                                                                        marker.setMarkerType(MapPOIItem.MarkerType.CustomImage); // 마커타입을 커스텀 마커로 지정.
-                                                                                                                        marker.setCustomImageResourceId(R.drawable.ic_academy_marker); // 마커 이미지.
-                                                                                                                        marker.setCustomImageAutoscale(false); // hdpi, xhdpi 등 안드로이드 플랫폼의 스케일을 사용할 경우 지도 라이브러리의 스케일 기능을 꺼줌.
-                                                                                                                        marker.setCustomImageAnchor(0.5f, 1.0f);
-                                                                                                                        mMapView.addPOIItem(marker);
-                                                                                                                    }
-                                                                                                                    for (Document document : subwayList) {
-                                                                                                                        MapPOIItem marker = new MapPOIItem();
-                                                                                                                        marker.setItemName(document.getPlaceName());
-                                                                                                                        marker.setTag(tagNum++);
-                                                                                                                        double x = Double.parseDouble(document.getY());
-                                                                                                                        double y = Double.parseDouble(document.getX());
-                                                                                                                        //카카오맵은 참고로 new MapPoint()로  생성못함. 좌표기준이 여러개라 이렇게 메소드로 생성해야함
-                                                                                                                        MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(x, y);
-                                                                                                                        marker.setMapPoint(mapPoint);
-                                                                                                                        marker.setMarkerType(MapPOIItem.MarkerType.CustomImage); // 마커타입을 커스텀 마커로 지정.
-                                                                                                                        marker.setCustomImageResourceId(R.drawable.ic_subway_marker); // 마커 이미지.
-                                                                                                                        marker.setCustomImageAutoscale(false); // hdpi, xhdpi 등 안드로이드 플랫폼의 스케일을 사용할 경우 지도 라이브러리의 스케일 기능을 꺼줌.
-                                                                                                                        marker.setCustomImageAnchor(0.5f, 1.0f);
-                                                                                                                        mMapView.addPOIItem(marker);
-                                                                                                                    }
-                                                                                                                    for (Document document : bankList) {
-                                                                                                                        MapPOIItem marker = new MapPOIItem();
-                                                                                                                        marker.setItemName(document.getPlaceName());
-                                                                                                                        marker.setTag(tagNum++);
-                                                                                                                        double x = Double.parseDouble(document.getY());
-                                                                                                                        double y = Double.parseDouble(document.getX());
-                                                                                                                        //카카오맵은 참고로 new MapPoint()로  생성못함. 좌표기준이 여러개라 이렇게 메소드로 생성해야함
-                                                                                                                        MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(x, y);
-                                                                                                                        marker.setMapPoint(mapPoint);
-                                                                                                                        marker.setMarkerType(MapPOIItem.MarkerType.CustomImage); // 마커타입을 커스텀 마커로 지정.
-                                                                                                                        marker.setCustomImageResourceId(R.drawable.ic_bank_marker); // 마커 이미지.
-                                                                                                                        marker.setCustomImageAutoscale(false); // hdpi, xhdpi 등 안드로이드 플랫폼의 스케일을 사용할 경우 지도 라이브러리의 스케일 기능을 꺼줌.
-                                                                                                                        marker.setCustomImageAnchor(0.5f, 1.0f);
-                                                                                                                        mMapView.addPOIItem(marker);
-                                                                                                                    }
-                                                                                                                    for (Document document : hospitalList) {
-                                                                                                                        MapPOIItem marker = new MapPOIItem();
-                                                                                                                        marker.setItemName(document.getPlaceName());
-                                                                                                                        marker.setTag(tagNum++);
-                                                                                                                        double x = Double.parseDouble(document.getY());
-                                                                                                                        double y = Double.parseDouble(document.getX());
-                                                                                                                        //카카오맵은 참고로 new MapPoint()로  생성못함. 좌표기준이 여러개라 이렇게 메소드로 생성해야함
-                                                                                                                        MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(x, y);
-                                                                                                                        marker.setMapPoint(mapPoint);
-                                                                                                                        marker.setMarkerType(MapPOIItem.MarkerType.CustomImage); // 마커타입을 커스텀 마커로 지정.
-                                                                                                                        marker.setCustomImageResourceId(R.drawable.ic_hospital_marker); // 마커 이미지.
-                                                                                                                        marker.setCustomImageAutoscale(false); // hdpi, xhdpi 등 안드로이드 플랫폼의 스케일을 사용할 경우 지도 라이브러리의 스케일 기능을 꺼줌.
-                                                                                                                        marker.setCustomImageAnchor(0.5f, 1.0f);
-                                                                                                                        mMapView.addPOIItem(marker);
-                                                                                                                    }
-                                                                                                                    for (Document document : pharmacyList) {
-                                                                                                                        MapPOIItem marker = new MapPOIItem();
-                                                                                                                        marker.setItemName(document.getPlaceName());
-                                                                                                                        marker.setTag(tagNum++);
-                                                                                                                        double x = Double.parseDouble(document.getY());
-                                                                                                                        double y = Double.parseDouble(document.getX());
-                                                                                                                        //카카오맵은 참고로 new MapPoint()로  생성못함. 좌표기준이 여러개라 이렇게 메소드로 생성해야함
-                                                                                                                        MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(x, y);
-                                                                                                                        marker.setMapPoint(mapPoint);
-                                                                                                                        marker.setMarkerType(MapPOIItem.MarkerType.CustomImage); // 마커타입을 커스텀 마커로 지정.
-                                                                                                                        marker.setCustomImageResourceId(R.drawable.ic_pharmacy_marker); // 마커 이미지.
-                                                                                                                        marker.setCustomImageAutoscale(false); // hdpi, xhdpi 등 안드로이드 플랫폼의 스케일을 사용할 경우 지도 라이브러리의 스케일 기능을 꺼줌.
-                                                                                                                        marker.setCustomImageAnchor(0.5f, 1.0f);
-                                                                                                                        mMapView.addPOIItem(marker);
-                                                                                                                        //자세히보기 fab 버튼 보이게
-                                                                                                                        mLoaderLayout.setVisibility(View.GONE);
-                                                                                                                        searchDetailFab.setVisibility(View.VISIBLE);
-                                                                                                                    }
-                                                                                                                    for (Document document : cafeList) {
-                                                                                                                        MapPOIItem marker = new MapPOIItem();
-                                                                                                                        marker.setItemName(document.getPlaceName());
-                                                                                                                        marker.setTag(tagNum++);
-                                                                                                                        double x = Double.parseDouble(document.getY());
-                                                                                                                        double y = Double.parseDouble(document.getX());
-                                                                                                                        //카카오맵은 참고로 new MapPoint()로  생성못함. 좌표기준이 여러개라 이렇게 메소드로 생성해야함
-                                                                                                                        MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(x, y);
-                                                                                                                        marker.setMapPoint(mapPoint);
-                                                                                                                        marker.setMarkerType(MapPOIItem.MarkerType.CustomImage); // 마커타입을 커스텀 마커로 지정.
-                                                                                                                        marker.setCustomImageResourceId(R.drawable.ic_cafe_marker); // 마커 이미지.
-                                                                                                                        marker.setCustomImageAutoscale(false); // hdpi, xhdpi 등 안드로이드 플랫폼의 스케일을 사용할 경우 지도 라이브러리의 스케일 기능을 꺼줌.
-                                                                                                                        marker.setCustomImageAnchor(0.5f, 1.0f);
-                                                                                                                        mMapView.addPOIItem(marker);
-                                                                                                                        //자세히보기 fab 버튼 보이게
-                                                                                                                        mLoaderLayout.setVisibility(View.GONE);
-                                                                                                                        searchDetailFab.setVisibility(View.VISIBLE);
-                                                                                                                    }
-                                                                                                                }
-                                                                                                            }
+                                Log.d(TAG, "hospitalList Success");
+                                hospitalList.addAll(response.body().getDocuments());
 
-                                                                                                            @Override
-                                                                                                            public void onFailure(@NotNull Call<CategoryResult> call, @NotNull Throwable t) {
 
-                                                                                                            }
-                                                                                                        });
-                                                                                                    }
-                                                                                                }
+                            call = apiInterface.getSearchCategory(getString(R.string.restapi_key), "PM9", x + "", y + "", 1000);
+                            call.enqueue(new Callback<CategoryResult>() {
+                            @Override
+                            public void onResponse(@NotNull Call<CategoryResult> call, @NotNull Response<CategoryResult> response) {
+                                if (response.isSuccessful())
+                                {
+                                    assert response.body() != null;
+                                    Log.d(TAG, "pharmacyList Success");
+                                    pharmacyList.addAll(response.body().getDocuments());
 
-                                                                                                @Override
-                                                                                                public void onFailure(@NotNull Call<CategoryResult> call, Throwable t) {
+                                        //모두 통신 성공 시 circle 생성
+                                        MapCircle circle1 = new MapCircle(
+                                                MapPoint.mapPointWithGeoCoord(y, x), // center
+                                                1000, // radius
+                                                Color.argb(128, 255, 98, 124), // strokeColor
+                                                Color.argb(128, 255, 255, 232) // fillColor
+                                        );
 
-                                                                                                }
-                                                                                            });
-                                                                                        }
-                                                                                    }
 
-                                                                                    @Override
-                                                                                    public void onFailure(@NotNull Call<CategoryResult> call, @NotNull Throwable t) {
+                                        circle1.setTag(5678);
+                                        mMapView.addCircle(circle1);
+                                        Log.d("SIZE1", bigMartList.size() + "");
+                                        Log.d("SIZE2", gs24List.size() + "");
+                                        Log.d("SIZE3", bankList.size() + "");
 
-                                                                                    }
-                                                                                });
-                                                                            }
-                                                                        }
-
-                                                                        @Override
-                                                                        public void onFailure(@NotNull Call<CategoryResult> call, @NotNull Throwable t) {
-
-                                                                        }
-                                                                    });
-                                                                }
-                                                            }
-
-                                                            @Override
-                                                            public void onFailure(@NotNull Call<CategoryResult> call, @NotNull Throwable t) {
-
-                                                            }
-                                                        });
-                                                    }
-                                                }
-
-                                                @Override
-                                                public void onFailure(@NotNull Call<CategoryResult> call, @NotNull Throwable t) {
-
-                                                }
-                                            });
+                                        //마커 생성
+                                        int tagNum = 10;
+                                        for (Document document : bigMartList) {
+                                            MapPOIItem marker = new MapPOIItem();
+                                            marker.setItemName(document.getPlaceName());
+                                            marker.setTag(tagNum++);
+                                            double x = Double.parseDouble(document.getY());
+                                            double y = Double.parseDouble(document.getX());
+                                            //카카오맵은 참고로 new MapPoint()로  생성못함. 좌표기준이 여러개라 이렇게 메소드로 생성해야함
+                                            MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(x, y);
+                                            marker.setMapPoint(mapPoint);
+                                            marker.setMarkerType(MapPOIItem.MarkerType.CustomImage); // 마커타입을 커스텀 마커로 지정.
+                                            marker.setCustomImageResourceId(R.drawable.bigmarket); // 마커 이미지.
+                                            marker.setCustomImageAutoscale(false); // hdpi, xhdpi 등 안드로이드 플랫폼의 스케일을 사용할 경우 지도 라이브러리의 스케일 기능을 꺼줌.
+                                            marker.setCustomImageAnchor(0.5f, 1.0f); // 마커 이미지중 기준이 되는 위치(앵커포인트) 지정 - 마커 이미지 좌측 상단 기준 x(0.0f ~ 1.0f), y(0.0f ~ 1.0f) 값.
+                                            mMapView.addPOIItem(marker);
                                         }
-                                    }
 
+                                        for (Document document : gs24List) {
+                                            MapPOIItem marker = new MapPOIItem();
+                                            marker.setItemName(document.getPlaceName());
+                                            marker.setTag(tagNum++);
+                                            double x = Double.parseDouble(document.getY());
+                                            double y = Double.parseDouble(document.getX());
+                                            //카카오맵은 참고로 new MapPoint()로  생성못함. 좌표기준이 여러개라 이렇게 메소드로 생성해야함
+                                            MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(x, y);
+                                            marker.setMapPoint(mapPoint);
+                                            marker.setMarkerType(MapPOIItem.MarkerType.CustomImage); // 마커타입을 커스텀 마커로 지정.
+                                            marker.setCustomImageResourceId(R.drawable.seven); // 마커 이미지.
+                                            marker.setCustomImageAutoscale(false); // hdpi, xhdpi 등 안드로이드 플랫폼의 스케일을 사용할 경우 지도 라이브러리의 스케일 기능을 꺼줌.
+                                            marker.setCustomImageAnchor(0.5f, 1.0f);
+                                            mMapView.addPOIItem(marker);
+                                        }
+
+                                        for (Document document : bankList) {
+                                            MapPOIItem marker = new MapPOIItem();
+                                            marker.setItemName(document.getPlaceName());
+                                            marker.setTag(tagNum++);
+                                            double x = Double.parseDouble(document.getY());
+                                            double y = Double.parseDouble(document.getX());
+                                            //카카오맵은 참고로 new MapPoint()로  생성못함. 좌표기준이 여러개라 이렇게 메소드로 생성해야함
+                                            MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(x, y);
+                                            marker.setMapPoint(mapPoint);
+                                            marker.setMarkerType(MapPOIItem.MarkerType.CustomImage); // 마커타입을 커스텀 마커로 지정.
+                                            marker.setCustomImageResourceId(R.drawable.ic_bank_marker); // 마커 이미지.
+                                            marker.setCustomImageAutoscale(false); // hdpi, xhdpi 등 안드로이드 플랫폼의 스케일을 사용할 경우 지도 라이브러리의 스케일 기능을 꺼줌.
+                                            marker.setCustomImageAnchor(0.5f, 1.0f);
+                                            mMapView.addPOIItem(marker);
+                                        }
+                                        for (Document document : hospitalList) {
+                                            MapPOIItem marker = new MapPOIItem();
+                                            marker.setItemName(document.getPlaceName());
+                                            marker.setTag(tagNum++);
+                                            double x = Double.parseDouble(document.getY());
+                                            double y = Double.parseDouble(document.getX());
+                                            //카카오맵은 참고로 new MapPoint()로  생성못함. 좌표기준이 여러개라 이렇게 메소드로 생성해야함
+                                            MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(x, y);
+                                            marker.setMapPoint(mapPoint);
+                                            marker.setMarkerType(MapPOIItem.MarkerType.CustomImage); // 마커타입을 커스텀 마커로 지정.
+                                            marker.setCustomImageResourceId(R.drawable.madic); // 마커 이미지.
+                                            marker.setCustomImageAutoscale(false); // hdpi, xhdpi 등 안드로이드 플랫폼의 스케일을 사용할 경우 지도 라이브러리의 스케일 기능을 꺼줌.
+                                            marker.setCustomImageAnchor(0.5f, 1.0f);
+                                            mMapView.addPOIItem(marker);
+                                        }
+                                        for (Document document : pharmacyList) {
+                                            MapPOIItem marker = new MapPOIItem();
+                                            marker.setItemName(document.getPlaceName());
+                                            marker.setTag(tagNum++);
+                                            double x = Double.parseDouble(document.getY());
+                                            double y = Double.parseDouble(document.getX());
+                                            //카카오맵은 참고로 new MapPoint()로  생성못함. 좌표기준이 여러개라 이렇게 메소드로 생성해야함
+                                            MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(x, y);
+                                            marker.setMapPoint(mapPoint);
+                                            marker.setMarkerType(MapPOIItem.MarkerType.CustomImage); // 마커타입을 커스텀 마커로 지정.
+                                            marker.setCustomImageResourceId(R.drawable.drug); // 마커 이미지.
+                                            marker.setCustomImageAutoscale(false); // hdpi, xhdpi 등 안드로이드 플랫폼의 스케일을 사용할 경우 지도 라이브러리의 스케일 기능을 꺼줌.
+                                            marker.setCustomImageAnchor(0.5f, 1.0f);
+
+                                            mMapView.addPOIItem(marker);
+                                            //자세히보기 fab 버튼 보이게 실행후 왼쪽.
+                                            mLoaderLayout.setVisibility(View.GONE);
+                                            searchDetailFab.setVisibility(View.VISIBLE);
+                                        }
+                                      }
+                                //IF절 한개씩
+                                    }
+                                    @Override
+                                    public void onFailure(@NotNull Call<CategoryResult> call, @NotNull Throwable t) {
+                                    }
+                                });
+                            }
+                        }
+                                    @Override
+                                    public void onFailure(@NotNull Call<CategoryResult> call, Throwable t) {
+                                    }
+                                });
+                            }
+                        }
                                     @Override
                                     public void onFailure(@NotNull Call<CategoryResult> call, @NotNull Throwable t) {
 
@@ -581,21 +471,21 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
                                 });
                             }
                         }
+                                    @Override
+                                    public void onFailure(@NotNull Call<CategoryResult> call, @NotNull Throwable t) {
 
-                        @Override
-                        public void onFailure(@NotNull Call<CategoryResult> call, @NotNull Throwable t) {
-
+                                    }
+                                });
+                            }
                         }
-                    });
-                }
-            }
+                                    @Override
+                                    public void onFailure(@NotNull Call<CategoryResult> call, @NotNull Throwable t) {
+                                        Log.d(TAG, "FAIL");
+                                    }
+                                });
+                            }
 
-            @Override
-            public void onFailure(@NotNull Call<CategoryResult> call, @NotNull Throwable t) {
-                Log.d(TAG, "FAIL");
-            }
-        });
-    }
+
 
     public void anim() {
         if (isFabOpen) {
@@ -754,7 +644,7 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
         searchMarker.setItemName(mSearchName);
         MapPoint mapPoint2 = MapPoint.mapPointWithGeoCoord(mSearchLat, mSearchLng);
         searchMarker.setMapPoint(mapPoint2);
-        searchMarker.setMarkerType(MapPOIItem.MarkerType.BluePin); // 기본으로 제공하는 BluePin 마커 모양.
+        searchMarker.setMapPoint(mapPoint);// 기본으로 제공하는 BluePin 마커 모양.
         searchMarker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
         searchMarker.setDraggable(true);
         mMapView.addPOIItem(searchMarker);
@@ -763,13 +653,17 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
     /*
      *  현재 위치 업데이트(setCurrentLocationEventListener)
      */
+
     @Override
     public void onCurrentLocationUpdate(MapView mapView, MapPoint mapPoint, float accuracyInMeters) {
         MapPoint.GeoCoordinate mapPointGeo = mapPoint.getMapPointGeoCoord();
         Log.i(TAG, String.format("MapView onCurrentLocationUpdate (%f,%f) accuracy (%f)", mapPointGeo.latitude, mapPointGeo.longitude, accuracyInMeters));
         currentMapPoint = MapPoint.mapPointWithGeoCoord(mapPointGeo.latitude, mapPointGeo.longitude);
+
         //이 좌표로 지도 중심 이동
         mMapView.setMapCenterPoint(currentMapPoint, true);
+        mMapView.setCustomCurrentLocationMarkerTrackingImage(R.drawable.makerme90, new MapPOIItem.ImageOffset(30,30));
+
         //전역변수로 현재 좌표 저장
         mCurrentLat = mapPointGeo.latitude;
         mCurrentLng = mapPointGeo.longitude;
@@ -778,6 +672,7 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
         //트래킹 모드가 아닌 단순 현재위치 업데이트일 경우, 한번만 위치 업데이트하고 트래킹을 중단시키기 위한 로직
         if (!isTrackingMode) {
             mMapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
+            mMapView.setCustomCurrentLocationMarkerTrackingImage(R.drawable.makerme90, new MapPOIItem.ImageOffset(30,30));
         }
     }
 
@@ -790,12 +685,14 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
     public void onCurrentLocationUpdateFailed(MapView mapView) {
         Log.i(TAG, "onCurrentLocationUpdateFailed");
         mMapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
+        mMapView.setCustomCurrentLocationMarkerTrackingImage(R.drawable.makerme90, new MapPOIItem.ImageOffset(30,30));
     }
 
     @Override
     public void onCurrentLocationUpdateCancelled(MapView mapView) {
         Log.i(TAG, "onCurrentLocationUpdateCancelled");
         mMapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
+        mMapView.setCustomCurrentLocationMarkerTrackingImage(R.drawable.makerme90, new MapPOIItem.ImageOffset(30,30));
     }
 
     @Subscribe //검색예시 클릭시 이벤트 오토버스
@@ -806,11 +703,12 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
         mSearchLat = Double.parseDouble(document.getY());
         mMapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(mSearchLat, mSearchLng), true);
         mMapView.removePOIItem(searchMarker);
+        mMapView.setCustomCurrentLocationMarkerTrackingImage(R.drawable.makerme90, new MapPOIItem.ImageOffset(30,30));
         searchMarker.setItemName(mSearchName);
         searchMarker.setTag(10000);
         MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(mSearchLat, mSearchLng);
         searchMarker.setMapPoint(mapPoint);
-        searchMarker.setMarkerType(MapPOIItem.MarkerType.BluePin); // 기본으로 제공하는 BluePin 마커 모양.
+         // 기본으로 제공하는 BluePin 마커 모양.
         searchMarker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
         //마커 드래그 가능하게 설정
         searchMarker.setDraggable(true);
