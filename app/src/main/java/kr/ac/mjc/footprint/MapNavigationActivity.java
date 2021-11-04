@@ -44,6 +44,7 @@ public class MapNavigationActivity extends AppCompatActivity implements MapView.
         mMapView.setCurrentLocationEventListener(this);
         //setCurrentLocationTrackingMode
         mMapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithHeading);
+        mMapView.setCustomCurrentLocationMarkerTrackingImage(R.drawable.makerme90, new MapPOIItem.ImageOffset(30,30));
     }
 
     @Override
@@ -57,16 +58,19 @@ public class MapNavigationActivity extends AppCompatActivity implements MapView.
         MapPoint currentMapPoint = MapPoint.mapPointWithGeoCoord(mapPointGeo.latitude, mapPointGeo.longitude);
         //이 좌표로 지도 중심 이동
         mMapView.setMapCenterPoint(currentMapPoint, true);
+        mMapView.setCustomCurrentLocationMarkerTrackingImage(R.drawable.makerme90, new MapPOIItem.ImageOffset(30,30));
     }
 
     @Override
     public void onCurrentLocationDeviceHeadingUpdate(MapView mapView, float v) {
         mMapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithHeading);
+        mMapView.setCustomCurrentLocationMarkerTrackingImage(R.drawable.makerme90, new MapPOIItem.ImageOffset(30,30));
     }
 
     @Override
     public void onCurrentLocationUpdateFailed(MapView mapView) {
         mMapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithHeading);
+        mMapView.setCustomCurrentLocationMarkerTrackingImage(R.drawable.makerme90, new MapPOIItem.ImageOffset(30,30));
     }
 
     @Override
@@ -149,5 +153,6 @@ public class MapNavigationActivity extends AppCompatActivity implements MapView.
         super.onDestroy();
         mMapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
         mMapView.setShowCurrentLocationMarker(false);
+        mMapView.setCustomCurrentLocationMarkerTrackingImage(R.drawable.makerme90, new MapPOIItem.ImageOffset(30,30));
     }
 }
