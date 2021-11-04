@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.firebase.firestore.FirebaseFirestore
+import de.hdodenhof.circleimageview.CircleImageView
 import java.time.Year
 
 class AddAdapter(var context: Context, var postList:ArrayList<Post>): RecyclerView.Adapter<AddAdapter.ViewHolder>() {
@@ -17,24 +18,33 @@ class AddAdapter(var context: Context, var postList:ArrayList<Post>): RecyclerVi
 
         var titleTv: TextView = itemView.findViewById(R.id.title_tv)
         var textTv2: TextView =itemView.findViewById(R.id.text_tv2)
-        var incomeTv2: TextView = itemView.findViewById(R.id.income_tv2)
-        var expTv2: TextView = itemView.findViewById(R.id.exp_tv2)
         var dateItem: TextView = itemView.findViewById(R.id.item_date)
+
+        var writerTv: TextView = itemView.findViewById(R.id.writer_tv)
+        var profileIv3: CircleImageView = itemView.findViewById(R.id.profile_iv3)
+
+        var user=User()
 
         fun bind(post:Post){
 
             titleTv.text = post.textTitleEt
             textTv2.text = post.contentEt
-            incomeTv2.text = post.incomeEt
-            expTv2.text = post.expEt
             dateItem.text = post.uploadDate.toString()
+
+            var firestore = FirebaseFirestore.getInstance()
+            firestore.collection("User").document(post.userId).get()
+                .addOnSuccessListener {
+                    var user = it.toObject(User::class.java)
+                    Glide.with(profileIv3).load(user?.profileUrl).into(profileIv3)
+                    writerTv.text = user?.name
+                }
 
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AddAdapter.ViewHolder {
         //레이아웃을 가져오는 과정
-        var view = LayoutInflater.from(context).inflate(R.layout.item_add,parent,false)
+        var view = LayoutInflater.from(context).inflate(R.layout.item_community,parent,false)
         //가져온 레이아웃을 뷰홀더에 리턴
         return ViewHolder(view)
     }

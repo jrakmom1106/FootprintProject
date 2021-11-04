@@ -14,7 +14,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import java.util.*
 
-class AddActivity:AppCompatActivity() {
+class NoteAddActivity:AppCompatActivity() {
 
     //AddFragment의 내용을 이곳으로 복사할 예정
     lateinit var loadingPb: ProgressBar
@@ -60,8 +60,8 @@ class AddActivity:AppCompatActivity() {
             }
 
             startLoading()
-            var post = Post(title,content,income,exp,memo,auth.currentUser?.email!!)//
-            firestore.collection("Post")//edit
+            var post = Post2(uuid,title,content,income,exp,memo,auth.currentUser?.email!!)//
+            firestore.collection("Post2")//edit
                 .document(uuid).set(post)
                 .addOnSuccessListener {
                     endLoading()

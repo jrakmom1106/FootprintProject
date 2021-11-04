@@ -19,7 +19,7 @@ import com.google.firebase.firestore.Query
 import de.hdodenhof.circleimageview.CircleImageView
 
 
-class AddFragment_1:Fragment() {
+class CommunityFragment:Fragment() {
     lateinit var profileIv: CircleImageView
     lateinit var nameTv: TextView
     lateinit var diaryRv: RecyclerView

@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
 
         //아이콘 버그 해결
         tabLayout.getTabAt(0)?.setIcon(R.drawable.baseline_home_black_48)?.setText("홈")
-        tabLayout.getTabAt(1)?.setIcon(R.drawable.baseline_add_black_48)?.setText("모집 공고")
+        tabLayout.getTabAt(1)?.setIcon(R.drawable.outline_forum_black_48)?.setText("커뮤니티")
         tabLayout.getTabAt(2)?.setIcon(R.drawable.outline_note_black_48)?.setText("다이어리")
         tabLayout.getTabAt(3)?.setIcon(R.drawable.baseline_perm_identity_black_48)?.setText("마이페이지")
 

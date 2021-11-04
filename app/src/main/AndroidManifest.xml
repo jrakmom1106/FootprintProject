@@ -39,6 +39,7 @@
         <activity android:name=".PlaceDetailActivity"/>
         <activity android:name=".MapSearchDetailActivity"/>
         <activity android:name=".MapNavigationActivity"/>
+        <activity android:name=".NoteAddActivity"/>
 
         <meta-data
             android:name="com.kakao.sdk.AppKey"

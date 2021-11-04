@@ -12,6 +12,7 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.storage.FirebaseStorage
 import de.hdodenhof.circleimageview.CircleImageView
 import java.util.*
+import java.util.UUID as UUID1
 
 class DetailActivity:AppCompatActivity() {
     lateinit var detailTitle:TextView
@@ -27,7 +28,6 @@ class DetailActivity:AppCompatActivity() {
     lateinit var auth: FirebaseAuth
     lateinit var firestore: FirebaseFirestore
     lateinit var storage: FirebaseStorage
-    //private var uid: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +50,6 @@ class DetailActivity:AppCompatActivity() {
 
         var id = intent.getStringExtra("id")
 
-
         if(id!=null) {
 
             firestore.collection("Post2").document(id).get()
@@ -69,6 +68,7 @@ class DetailActivity:AppCompatActivity() {
 
                     }
                 }
+
 
             firestore.collection("User").document(auth.currentUser?.email!!).get()
                 .addOnCompleteListener {

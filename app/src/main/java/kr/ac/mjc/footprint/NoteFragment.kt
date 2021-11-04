@@ -41,7 +41,7 @@ class NoteFragment:Fragment(), NoteAdapter.OnItemClickListener {
         var view = inflater.inflate(R.layout.fragment_note,container, false)
 
         noteRv = view.findViewById(R.id.note_rv)
-        fab = view.findViewById(R.id.fab)
+        fab = view.findViewById(R.id.fab2)
 
         return view;
     }
@@ -66,7 +66,7 @@ class NoteFragment:Fragment(), NoteAdapter.OnItemClickListener {
         exp_text = view.findViewById(R.id.exp_tv)
 
         fab.setOnClickListener {
-            var intent = Intent(activity,AddActivity::class.java)
+            var intent = Intent(activity,NoteAddActivity::class.java)
             startActivity(intent)
         }
 

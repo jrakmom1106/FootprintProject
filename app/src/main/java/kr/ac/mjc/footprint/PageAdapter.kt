@@ -10,7 +10,7 @@ class PageAdapter(fragmentManager: FragmentManager):FragmentPagerAdapter(fragmen
         if(position==0){
             return HomeFragment()
         } else if(position==1) {
-            return AddFragment_1()
+            return CommunityFragment()
         } else if(position==2){
             return NoteFragment()
         } else{

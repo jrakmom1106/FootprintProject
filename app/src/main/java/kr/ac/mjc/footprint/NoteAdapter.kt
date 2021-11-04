@@ -40,10 +40,12 @@ class NoteAdapter(var context: Context, var postList:ArrayList<Post2>): Recycler
 //                startActivity(itemView?.context,intent,null)
 //            }
             itemView.setOnClickListener {
-                onItemClickListener?.onItemClick(post)
-                val intent = Intent(itemView?.context,DetailActivity::class.java)
-                intent.putExtra("id",post.id)
-                startActivity(itemView?.context,intent,null)
+                if (post.uid != null){
+                    onItemClickListener?.onItemClick(post)
+                    val intent = Intent(itemView?.context, DetailActivity::class.java)
+                    intent.putExtra("id",post.id)
+                    startActivity(itemView?.context, intent, null)
+                }
             }
         }
     }

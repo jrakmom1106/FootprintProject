@@ -4,6 +4,7 @@ import android.text.Editable
 import java.util.*
 
 class Post2 (
+    var uid:String=UUID.randomUUID().toString(),
     //var imageUrl:String="", // 업로드한 이미지의 경로
     var textTitleEt:String="", //입력한 문구 저장 변수
     var contentEt:String="",
