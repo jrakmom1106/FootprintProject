@@ -14,9 +14,6 @@
         android:layout_weight="0.05"
         android:orientation="vertical">
 
-
-
-
     </LinearLayout>
 
 
