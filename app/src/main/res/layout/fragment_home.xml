@@ -11,126 +11,95 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="0.05"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@android:color/holo_green_light"
-            android:gravity="center"
-            android:text="발 자 취" />
+
 
 
     </LinearLayout>
 
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.2"
+        android:orientation="vertical"
+        android:padding="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        tools:layout_editor_absoluteX="19dp">
 
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profile_iv"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/baseline_perm_identity_black_48" />
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/name_tv"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:minHeight="0dp"
-            android:minWidth="0dp"
-
-            >
-
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="2.5dp"
-                android:layout_weight="1"
-                android:padding="70dp"
-                android:text="버튼1"
-                android:minHeight="0dp"
-                android:minWidth="0dp"
-
-
-                />
-
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="버튼2"
-                android:padding="70dp"
-                android:layout_marginLeft="2.5dp"
-                android:minHeight="0dp"
-                android:minWidth="0dp"
-
-                />
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:minHeight="0dp"
-            android:minWidth="0dp"
-
-
-            >
-
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="2.5dp"
-                android:layout_weight="1"
-                android:padding="70dp"
-                android:text="버튼1"
-                android:minHeight="0dp"
-                android:minWidth="0dp"
-
-
-                />
-
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="버튼2"
-                android:padding="70dp"
-                android:layout_marginLeft="2.5dp"
-                android:minHeight="0dp"
-                android:minWidth="0dp"
-
-                />
-
-        </LinearLayout>
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="0dp"
+            android:gravity="center_horizontal"
+            android:text="사용자 명"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="20sp" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal"
+        android:layout_weight="0.4"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        android:orientation="vertical">
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.3"
+        android:orientation="vertical"
+        android:minHeight="0dp"
+        android:minWidth="0dp"
+        android:layout_padding="0dp"
+        >
+
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@tools:sample/backgrounds/scenic"
+
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.15"
+        android:orientation="vertical"
         android:layout_marginBottom="0dp"
         android:minHeight="0dp"
         android:minWidth="0dp"
         >
 
-
-
         <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="지도"
-        android:padding="70dp"
-        android:layout_marginLeft="2.5dp"
-        android:layout_marginRight="2.5dp"
-        android:minHeight="0dp"
-        android:minWidth="0dp"
-        android:id="@+id/fab"
-
-
-        />
-
-
-
-
+            android:id="@+id/fab"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="2.5dp"
+            android:layout_marginRight="2.5dp"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:padding="20dp"
+            android:text="지도" />
 
     </LinearLayout>
 
