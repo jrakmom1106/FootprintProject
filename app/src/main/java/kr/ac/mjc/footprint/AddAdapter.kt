@@ -1,20 +1,22 @@
 package kr.ac.mjc.footprint
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.firebase.firestore.FirebaseFirestore
 import de.hdodenhof.circleimageview.CircleImageView
-import java.time.Year
 
 class AddAdapter(var context: Context, var postList:ArrayList<Post>): RecyclerView.Adapter<AddAdapter.ViewHolder>() {
 
-    inner class ViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
+    var onItemClickListener: OnItemClickListener?=null
+
+    inner class ViewHolder(itemView: View):RecyclerView.ViewHolder(itemView!!){
 
         var titleTv: TextView = itemView.findViewById(R.id.title_tv)
         var textTv2: TextView =itemView.findViewById(R.id.text_tv2)
@@ -39,7 +41,18 @@ class AddAdapter(var context: Context, var postList:ArrayList<Post>): RecyclerVi
                     writerTv.text = user?.name
                 }
 
+            itemView.setOnClickListener {
+                    onItemClickListener?.onItemClick(post)
+                    val intent = Intent(itemView?.context, CommunityDetailActivity::class.java)
+                    intent.putExtra("id",post.id)
+                    startActivity(itemView?.context, intent, null)
+            }
+
         }
+    }
+
+    interface OnItemClickListener{
+        fun onItemClick(post:Post)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AddAdapter.ViewHolder {
