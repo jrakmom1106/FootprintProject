@@ -42,3 +42,4 @@ class ListAdapter(val itemList: ArrayList<ListLayout>): RecyclerView.Adapter<Lis
 
     private lateinit var itemClickListener : OnItemClickListener
 }
+
