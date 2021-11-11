@@ -1,4 +1,5 @@
-package kr.ac.mjc.footprint.model.category_search;
+package kr.ac.mjc.footprint.model.research;
+
 
 
 import android.os.Parcel;
@@ -7,7 +8,7 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Document implements Parcelable {
+public class Document1 implements Parcelable {
 
     @SerializedName("place_name")
     @Expose
@@ -44,7 +45,6 @@ public class Document implements Parcelable {
     private String x;
     @SerializedName("y")
     @Expose
-
     private String y;
 
     public String getPlaceName() {
@@ -165,10 +165,10 @@ public class Document implements Parcelable {
         dest.writeString(this.y);
     }
 
-    public Document() {
+    public Document1() {
     }
 
-    protected Document(Parcel in) {
+    protected Document1(Parcel in) {
         this.placeName = in.readString();
         this.distance = in.readString();
         this.placeUrl = in.readString();
@@ -183,15 +183,15 @@ public class Document implements Parcelable {
         this.y = in.readString();
     }
 
-    public static final Parcelable.Creator<Document> CREATOR = new Parcelable.Creator<Document>() {
+    public static final Parcelable.Creator<Document1> CREATOR = new Parcelable.Creator<Document1>() {
         @Override
-        public Document createFromParcel(Parcel source) {
-            return new Document(source);
+        public Document1 createFromParcel(Parcel source) {
+            return new Document1(source);
         }
 
         @Override
-        public Document[] newArray(int size) {
-            return new Document[size];
+        public Document1[] newArray(int size) {
+            return new Document1[size];
         }
     };
 }

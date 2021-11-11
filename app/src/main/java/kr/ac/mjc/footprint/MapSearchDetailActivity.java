@@ -15,9 +15,13 @@ import com.github.mikephil.charting.data.RadarDataSet;
 import com.github.mikephil.charting.data.RadarEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import kr.ac.mjc.footprint.model.category_search.Document;
+
+import kr.ac.mjc.footprint.model.research.SearchResult;
+
 import kr.ac.mjc.footprint.utils.IntentKey;
 
 public class MapSearchDetailActivity extends AppCompatActivity {
@@ -25,20 +29,18 @@ public class MapSearchDetailActivity extends AppCompatActivity {
 
     //xml
     RadarChart radarChart;
-    TextView itemCntText1, itemCntText2, itemCntText3, itemCntText4, itemCntText5, itemCntText6, itemCntText7, itemCntText8, itemCntText9;
+    TextView itemCntText1, itemCntText2, itemCntText3, itemCntText4, itemCntText5 , getItemCntText6;
     TextView ratingScore;
     RatingBar ratingBar;
 
     //value
     ArrayList<Document> bigMartList = new ArrayList<>(); //대형마트 MT1
     ArrayList<Document> gs24List = new ArrayList<>(); //편의점 CS2
-    ArrayList<Document> schoolList = new ArrayList<>(); //학교 SC4
-    ArrayList<Document> academyList = new ArrayList<>(); //학원 AC5
-    ArrayList<Document> subwayList = new ArrayList<>(); //지하철 SW8
     ArrayList<Document> bankList = new ArrayList<>(); //은행 BK9
     ArrayList<Document> hospitalList = new ArrayList<>(); //병원 HP8
     ArrayList<Document> pharmacyList = new ArrayList<>(); //약국 PM9
-    ArrayList<Document> cafeList = new ArrayList<>(); //카페
+
+    ArrayList<Document> keywordList = new ArrayList<>(); //test
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,10 +51,7 @@ public class MapSearchDetailActivity extends AppCompatActivity {
         itemCntText3 = findViewById(R.id.mapsearchdetail_tv_itemcount3);
         itemCntText4 = findViewById(R.id.mapsearchdetail_tv_itemcount4);
         itemCntText5 = findViewById(R.id.mapsearchdetail_tv_itemcount5);
-        itemCntText6 = findViewById(R.id.mapsearchdetail_tv_itemcount6);
-        itemCntText7 = findViewById(R.id.mapsearchdetail_tv_itemcount7);
-        itemCntText8 = findViewById(R.id.mapsearchdetail_tv_itemcount8);
-        itemCntText9 = findViewById(R.id.mapsearchdetail_tv_itemcount9);
+
         ratingBar = findViewById(R.id.mapsearchdetail_rb_ratingbar);
         ratingScore = findViewById(R.id.mapsearchdetail_tv_rating_score);
         radarChart = findViewById(R.id.mapsearchdetail_radar_chart);
@@ -66,34 +65,24 @@ public class MapSearchDetailActivity extends AppCompatActivity {
         Intent getIntent = getIntent();
         bigMartList = getIntent.getParcelableArrayListExtra(IntentKey.CATEGOTY_SEARCH_MODEL_EXTRA1);
         gs24List = getIntent.getParcelableArrayListExtra(IntentKey.CATEGOTY_SEARCH_MODEL_EXTRA2);
-        schoolList = getIntent.getParcelableArrayListExtra(IntentKey.CATEGOTY_SEARCH_MODEL_EXTRA3);
-        academyList = getIntent.getParcelableArrayListExtra(IntentKey.CATEGOTY_SEARCH_MODEL_EXTRA4);
-        subwayList = getIntent.getParcelableArrayListExtra(IntentKey.CATEGOTY_SEARCH_MODEL_EXTRA5);
-        bankList = getIntent.getParcelableArrayListExtra(IntentKey.CATEGOTY_SEARCH_MODEL_EXTRA6);
-        hospitalList = getIntent.getParcelableArrayListExtra(IntentKey.CATEGOTY_SEARCH_MODEL_EXTRA7);
-        pharmacyList = getIntent.getParcelableArrayListExtra(IntentKey.CATEGOTY_SEARCH_MODEL_EXTRA8);
-        cafeList = getIntent.getParcelableArrayListExtra(IntentKey.CATEGOTY_SEARCH_MODEL_EXTRA9);
+        bankList = getIntent.getParcelableArrayListExtra(IntentKey.CATEGOTY_SEARCH_MODEL_EXTRA3);
+        hospitalList = getIntent.getParcelableArrayListExtra(IntentKey.CATEGOTY_SEARCH_MODEL_EXTRA4);
+        pharmacyList = getIntent.getParcelableArrayListExtra(IntentKey.CATEGOTY_SEARCH_MODEL_EXTRA5);
     }
 
     private void initView(){
         float itemCnt1 = bigMartList.size();
         float itemCnt2 = gs24List.size();
-        float itemCnt3 = schoolList.size();
-        float itemCnt4 = academyList.size();
-        float itemCnt5 = subwayList.size();
-        float itemCnt6 = bankList.size();
-        float itemCnt7 = hospitalList.size();
-        float itemCnt8 = pharmacyList.size();
-        float itemCnt9 = cafeList.size();
+        float itemCnt3 = bankList.size();
+        float itemCnt4 = hospitalList.size();
+        float itemCnt5 = pharmacyList.size();
+
         itemCntText1.setText("" +(int) itemCnt1);
         itemCntText2.setText("" +(int) itemCnt2);
         itemCntText3.setText("" +(int) itemCnt3);
         itemCntText4.setText("" +(int) itemCnt4);
         itemCntText5.setText("" +(int) itemCnt5);
-        itemCntText6.setText("" +(int) itemCnt6);
-        itemCntText7.setText("" +(int) itemCnt7);
-        itemCntText8.setText("" +(int) itemCnt8);
-        itemCntText9.setText("" +(int) itemCnt9);
+
 
 
         //평균계산 최대 10점
@@ -112,19 +101,8 @@ public class MapSearchDetailActivity extends AppCompatActivity {
         if(itemCnt5 > 10){
             itemCnt5 = 10;
         }
-        if(itemCnt6 > 10){
-            itemCnt6 = 10;
-        }
-        if(itemCnt7 > 10){
-            itemCnt7 = 10;
-        }
-        if(itemCnt8 > 10){
-            itemCnt8 = 10;
-        }
-        if(itemCnt9 > 10){
-            itemCnt9 = 10;
-        }
-        float averageScore = Math.round((itemCnt1 + itemCnt2 + itemCnt3 + itemCnt4 + itemCnt5 + itemCnt6 + itemCnt7 + itemCnt8 + itemCnt9)/10*10 /10.0 );
+
+        float averageScore = Math.round((itemCnt1 + itemCnt2 + itemCnt3 + itemCnt4 + itemCnt5)/10*10 /10.0 );
         ratingScore.setText(averageScore+"");
         ratingBar.setRating(averageScore/2);
     }
@@ -136,7 +114,7 @@ public class MapSearchDetailActivity extends AppCompatActivity {
 
         RadarData data = new RadarData();
         data.addDataSet(dataSet);
-        String[] labels = {"대형마트", "편의점", "학교", "학원", "지하철", "은행", "병원", "약국", "카페"};
+        String[] labels = {"대형마트", "편의점", "은행", "병원", "약국"};
         XAxis xAxis = radarChart.getXAxis();
         xAxis.setValueFormatter(new IndexAxisValueFormatter(labels));
         radarChart.setData(data);
@@ -147,13 +125,9 @@ public class MapSearchDetailActivity extends AppCompatActivity {
         ArrayList<RadarEntry> dataVals = new ArrayList<>();
         dataVals.add(new RadarEntry(bigMartList.size()));
         dataVals.add(new RadarEntry(gs24List.size()));
-        dataVals.add(new RadarEntry(schoolList.size()));
-        dataVals.add(new RadarEntry(academyList.size()));
-        dataVals.add(new RadarEntry(subwayList.size()));
         dataVals.add(new RadarEntry(bankList.size()));
         dataVals.add(new RadarEntry(hospitalList.size()));
         dataVals.add(new RadarEntry(pharmacyList.size()));
-        dataVals.add(new RadarEntry(cafeList.size()));
         return dataVals;
     }
 

@@ -39,12 +39,43 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
         tools:layout_editor_absoluteX="-9dp">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/profile_iv"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_gravity="center"
-            app:srcCompat="@drawable/baseline_perm_identity_black_48" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <View
+                android:id="@+id/green_circle_view4"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+
+                android:layout_marginTop="32dp"
+                android:background="@drawable/round_blue"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_iv"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="12dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginRight="12dp"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toBottomOf="@+id/green_circle_view4"
+                app:layout_constraintEnd_toEndOf="@+id/green_circle_view4"
+                app:layout_constraintStart_toStartOf="@+id/green_circle_view4"
+                app:layout_constraintTop_toTopOf="@+id/green_circle_view4"
+                app:srcCompat="@drawable/baseline_perm_identity_black_48" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -111,7 +142,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:gravity="center|right|left"
-            android:text="textfield"
+            android:text="계정"
             android:textColor="#000000"
 
             android:textSize="20sp" />
@@ -140,7 +171,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center|right|left"
-            android:text="textfield"
+            android:text="소개글"
             android:textColor="#000000"
 
             android:textSize="20sp" />

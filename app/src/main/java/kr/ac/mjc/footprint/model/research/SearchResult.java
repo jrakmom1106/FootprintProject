@@ -1,13 +1,15 @@
 package kr.ac.mjc.footprint.model.research;
 
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import kr.ac.mjc.footprint.model.category_search.Document;
-import kr.ac.mjc.footprint.model.category_search.Meta;
 /*
 * HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
@@ -41,14 +43,16 @@ Content-Type: application/json;charset=UTF-8
   ]
 }
 * */
-public class SearchResult {
+
+public class SearchResult implements Parcelable {
+
 
     @SerializedName("meta")
     @Expose
     private Meta meta;
     @SerializedName("documents")
     @Expose
-    private List<Document> documents = null;
+    private List<Document1> documents = null;
 
     public Meta getMeta() {
         return meta;
@@ -58,12 +62,44 @@ public class SearchResult {
         this.meta = meta;
     }
 
-    public List<Document> getDocuments() {
+    public List<Document1> getDocuments1() {
         return documents;
     }
 
-    public void setDocuments(List<Document> documents) {
+    public void setDocuments(List<Document1> documents) {
         this.documents = documents;
     }
 
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeParcelable(this.meta, flags);
+        dest.writeList(this.documents);
+    }
+
+    public SearchResult() {
+    }
+
+    protected SearchResult(Parcel in) {
+        this.meta = in.readParcelable(Meta.class.getClassLoader());
+        this.documents = new ArrayList<Document1>();
+        in.readList(this.documents, Document1.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<SearchResult> CREATOR = new Parcelable.Creator<SearchResult>() {
+        @Override
+        public SearchResult createFromParcel(Parcel source) {
+            return new SearchResult(source);
+        }
+
+        @Override
+        public SearchResult[] newArray(int size) {
+            return new SearchResult[size];
+        }
+    };
 }

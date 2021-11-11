@@ -14,7 +14,7 @@ public interface ApiInterface {
     Call<CategoryResult> getSearchLocation(
             @Header("Authorization") String token,
             @Query("query") String query,
-            @Query("size") int size
+            @Query("radius") int radius
     );
 
     //카테고리로 검색
@@ -36,6 +36,16 @@ public interface ApiInterface {
             @Query("y") String y,
             @Query("size") int size
     );
+
+    @GET("v2/local/search/keyword.json")
+    Call<CategoryResult> getSearchKeyword(
+            @Header("Authorization") String token,
+            @Query("query") String query,
+            @Query("x") String x,
+            @Query("y") String y,
+            @Query("radius") int radius
+    );
+
 
     //주소로 검색 (아직안쓰는중)
     @GET("v2/local/search/address.json")

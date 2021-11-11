@@ -14,6 +14,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import kr.ac.mjc.footprint.R;
 import kr.ac.mjc.footprint.model.category_search.Document;
 
+import kr.ac.mjc.footprint.model.research.Document1;
+
+
+
+
 import kr.ac.mjc.footprint.utils.BusProvider;
 
 import java.util.ArrayList;
@@ -21,6 +26,7 @@ import java.util.ArrayList;
 public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.LocationViewHolder> {
     Context context;
     ArrayList<Document> items;
+
     EditText editText;
     RecyclerView recyclerView;
 
