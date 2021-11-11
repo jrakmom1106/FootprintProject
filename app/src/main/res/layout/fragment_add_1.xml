@@ -127,7 +127,7 @@
             android:id="@+id/diary_rv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="100dp"
+            android:layout_marginBottom="80dp"
             android:paddingBottom="?attr/actionBarSize">
 
         </androidx.recyclerview.widget.RecyclerView>

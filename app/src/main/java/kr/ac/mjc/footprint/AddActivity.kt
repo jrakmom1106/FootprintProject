@@ -20,9 +20,6 @@ class AddActivity:AppCompatActivity() {
     lateinit var loadingPb: ProgressBar
     lateinit var textTitleEt: EditText
     lateinit var contentEt: EditText
-    lateinit var incomeEt: EditText
-    lateinit var expEt: EditText
-    lateinit var memoEt: EditText
     lateinit var submitBtn: Button
 
     lateinit var auth: FirebaseAuth
@@ -31,15 +28,12 @@ class AddActivity:AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add)
+        setContentView(R.layout.activity_community_add)
 
         loadingPb=findViewById(R.id.loading_pb)
-        textTitleEt=findViewById(R.id.texttitle_et)
-        contentEt = findViewById(R.id.content_et)
-        incomeEt = findViewById(R.id.income_et)
-        expEt = findViewById(R.id.exp_et)
-        memoEt = findViewById(R.id.memo_et)
-        submitBtn=findViewById(R.id.submit_btn)
+        textTitleEt=findViewById(R.id.comtitle_et)
+        contentEt = findViewById(R.id.content_et2)
+        submitBtn=findViewById(R.id.submit_btn2)
 
         //추가
         auth= FirebaseAuth.getInstance()
@@ -49,10 +43,7 @@ class AddActivity:AppCompatActivity() {
         submitBtn.setOnClickListener {
             var title = textTitleEt.text.toString()
             var content = contentEt.text.toString()
-            var income = incomeEt.text.toString()
-            var exp = expEt.text.toString()
-            var memo = memoEt.text.toString()
-            var uuid = UUID.randomUUID().toString()
+
 
             if(title.length==0){
                 Toast.makeText(this,"제목을 입력해주세요", Toast.LENGTH_SHORT).show() //아무것도 안입력시
@@ -60,9 +51,9 @@ class AddActivity:AppCompatActivity() {
             }
 
             startLoading()
-            var post = Post(title,content,income,exp,memo,auth.currentUser?.email!!)//
+            var post = Post(title,content,auth.currentUser?.email!!)//
             firestore.collection("Post")//edit
-                .document(uuid).set(post)
+                .document(auth.currentUser?.uid!!).set(post)
                 .addOnSuccessListener {
                     endLoading()
                     clear()
@@ -75,9 +66,6 @@ class AddActivity:AppCompatActivity() {
     fun clear(){
         textTitleEt.text.clear()
         contentEt.text.clear()
-        incomeEt.text.clear()
-        expEt.text.clear()
-        memoEt.text.clear()
     }
 
     fun startLoading(){

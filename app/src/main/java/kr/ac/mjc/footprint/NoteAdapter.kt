@@ -1,6 +1,5 @@
 package kr.ac.mjc.footprint
 
-import android.app.Fragment
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater

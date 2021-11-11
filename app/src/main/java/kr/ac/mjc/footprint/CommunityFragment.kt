@@ -19,7 +19,7 @@ import com.google.firebase.firestore.Query
 import de.hdodenhof.circleimageview.CircleImageView
 
 
-class CommunityFragment:Fragment() {
+class CommunityFragment:Fragment(),AddAdapter.OnItemClickListener {
     lateinit var profileIv: CircleImageView
     lateinit var nameTv: TextView
     lateinit var diaryRv: RecyclerView
@@ -76,6 +76,8 @@ class CommunityFragment:Fragment() {
                         //생성된 것에만 넣어준다
                         if (dc.type == DocumentChange.Type.ADDED) {
                             var post = dc.document.toObject(Post::class.java)
+                            //id
+                            post.id = dc.document.id
                             postList.add(0,post) //0번째에 넣겠다.
                         }
                     }
@@ -105,6 +107,12 @@ class CommunityFragment:Fragment() {
                 }
                 addAdapter.notifyDataSetChanged()
             }
+    }
+
+    override fun onItemClick(post: Post) {
+        val intent3 = Intent(activity,CommunityDetailActivity::class.java)
+        intent3.putExtra("id",post.id)
+        startActivity(intent3)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
