@@ -327,8 +327,8 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
             public void onResponse(@NotNull Call<CategoryResult> call, @NotNull Response<CategoryResult> response) {
                 if (response.isSuccessful()) {
                 assert response.body() != null;
-                Log.d(TAG, "대형상점 Success");
-                bigMartList.addAll(response.body().getDocuments());
+                Log.d(TAG, "다이소 Success");
+                daisoMarket.addAll(response.body().getDocuments());
 
                         Call<CategoryResult> call2 = apiInterface.getSearchKeyword(getString(R.string.restapi_key), "빨래", x + "", y + "", 1000);
                         call2.enqueue(new Callback<CategoryResult>() {
@@ -336,8 +336,8 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
                         public void onResponse(@NotNull Call<CategoryResult> call, @NotNull Response<CategoryResult> response) {
                             if (response.isSuccessful()) {
                             assert response.body() != null;
-                            Log.d(TAG, "대형상점 Success");
-                            bigMartList.addAll(response.body().getDocuments());
+                            Log.d(TAG, "빨래방 Success");
+                            cleaningroom.addAll(response.body().getDocuments());
 
 
 
@@ -394,6 +394,8 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
                                                 Log.d("SIZE1", bigMartList.size() + "");
                                                 Log.d("SIZE2", gs24List.size() + "");
                                                 Log.d("SIZE3", bankList.size() + "");
+                                                Log.d("SIZE4", daisoMarket.size() + "");
+                                                Log.d("SIZE5", cleaningroom.size() + "");
 
                                                 //마커 생성
                                                 int tagNum = 10;
