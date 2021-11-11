@@ -19,6 +19,7 @@ public class HomeFragment extends Fragment {
 
     int i=0;
 
+
     ViewPager viewPager;
     private advFragment1 fragment1;
     private advFragment1 fragment2;
